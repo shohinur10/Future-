@@ -12,7 +12,7 @@ import { createSelector } from "reselect";
 import { Product } from "../../lib/types/product";
 import { serverApi } from "../../lib/config";
 import { retrieveNewDishes } from "./selector";
-import { ProductCategory } from "../../lib/enums/product.enum";
+import { ProductCategory,ProductStyleType } from "../../lib/enums/product.enum";
 
 
 /** REDUX SLICE & SELECTOR */
@@ -36,9 +36,9 @@ export default function NewDishes() {
                 newDishes.map((product: Product) => {
                   const imagePath = `${serverApi}/${product.productImages[0]}`;
                   const sizeVolume =
-                    product.productCategory === ProductCategory.BED
-                      ? product.productMaterial+ "plastic"
-                      : product.productColor + " white";
+                    product.productCategory === ProductCategory.BEDROOM
+                      ? product.productMaterialType+ "plastic"
+                      : product.productStyleType + " modern";
                   return (
                     <Card
                       key={product._id}

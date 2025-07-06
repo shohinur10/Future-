@@ -40,7 +40,7 @@ export default function Products(props: ProductsProps) {
     page: 1,
     limit: 8,
     order: "createdAt",
-    productCategory:  ProductCategory.BED,
+    productCategory:  ProductCategory.BEDROOM,
     search: "",
   });
   const [searchText, setSearchText] = useState<string>("");
@@ -95,7 +95,7 @@ export default function Products(props: ProductsProps) {
         <Stack flexDirection={"column"} alignItems={"center"}>
           <Stack className={"avatar-big-box"}>
             <Stack className={"top-text"}>
-              <p>Burak Restaurant</p>
+              <p>Future</p>
               <Stack className={"single-search-big-box"}>
                 <input
                   type={"search"}
@@ -162,45 +162,46 @@ export default function Products(props: ProductsProps) {
           <Stack className={"list-category-section"}>
             <Stack className={"product-category"}>
               <div className={"category-main"}>
-                <Button
+              <Button
                   variant={"contained"}
                   color={
-                    productSearch.productCategory ===  ProductCategory.DESK
-                      ? "primary"
-                      : "secondary"
-                  }
-                  onClick={() =>
-                    searchCollectionHandler( ProductCategory.SHELF)
-                  }
-                >
-                  Other
-                </Button>
-                <Button
-                  variant={"contained"}
-                  color={
-                    productSearch.productCategory === ProductCategory.CABINET
+                    productSearch.productCategory === ProductCategory.OTHER
                   
                       ? "primary"
                       : "secondary"
                   }
                   onClick={() =>
-                    searchCollectionHandler(ProductCategory.CABINET)
+                    searchCollectionHandler(ProductCategory.OTHER)
                   }
                 >
-                  Dessert
+                  OTHER
                 </Button>
                 <Button
                   variant={"contained"}
                   color={
-                    productSearch.productCategory === ProductCategory.CABINET
+                    productSearch.productCategory ===  ProductCategory.KITCHEN
                       ? "primary"
                       : "secondary"
                   }
                   onClick={() =>
-                    searchCollectionHandler(ProductCategory.CABINET)
+                    searchCollectionHandler( ProductCategory.KITCHEN)
                   }
                 >
-                  Drink
+                  KITCHEN
+                </Button>
+          
+                <Button
+                  variant={"contained"}
+                  color={
+                    productSearch.productCategory === ProductCategory.BEDROOM
+                      ? "primary"
+                      : "secondary"
+                  }
+                  onClick={() =>
+                    searchCollectionHandler(ProductCategory.BEDROOM)
+                  }
+                >
+                  BEDROOM
                 </Button>
                 <Button
                   variant={"contained"}
@@ -213,20 +214,33 @@ export default function Products(props: ProductsProps) {
                     searchCollectionHandler(ProductCategory.OUTDOOR)
                   }
                 >
-                  Salad
+               OUTDOOR
                 </Button>
                 <Button
                   variant={"contained"}
                   color={
-                    productSearch.productCategory === ProductCategory.BED
+                    productSearch.productCategory === ProductCategory.OFFICE
                       ? "primary"
                       : "secondary"
                   }
                   onClick={() =>
-                    searchCollectionHandler( ProductCategory.BED)
+                    searchCollectionHandler( ProductCategory.OFFICE)
                   }
                 >
-                  Dish
+                  OFFICE
+                </Button>
+                <Button
+                  variant={"contained"}
+                  color={
+                    productSearch.productCategory === ProductCategory.KIDS
+                      ? "primary"
+                      : "secondary"
+                  }
+                  onClick={() =>
+                    searchCollectionHandler( ProductCategory.KIDS)
+                  }
+                >
+                  KIDS
                 </Button>
               </div>
             </Stack>
@@ -236,9 +250,9 @@ export default function Products(props: ProductsProps) {
                 products.map((product: Product) => {
                   const imagePath = `${serverApi}/${product.productImages[0]}`;
                   const sizeVolume =
-                    product.productCategory===  ProductCategory.BED
-                      ? product.productMaterial+ " wood"
-                      : product.productColor + " black";
+                    product.productCategory===  ProductCategory.KITCHEN
+                      ? product.productMaterialType+ " wood"
+                      : product.productStyleType + " modern";
                   return (
                     <Stack
                       key={product._id}
@@ -249,7 +263,7 @@ export default function Products(props: ProductsProps) {
                         className={"product-img"}
                         sx={{ backgroundImage: `url(${imagePath})` }}
                       >
-                        <div className={"product-sale"}>{sizeVolume}</div>
+                        <div className={"product-sale"}>{product.productMaterialType}</div>
                         <Button
                           className={"shop-btn"}
                           onClick={(e) => {
@@ -329,16 +343,16 @@ export default function Products(props: ProductsProps) {
           <Box className={"category-title"}>Our Family Brands</Box>
           <Stack className={"brand-list"}>
             <Box className={"review-box"}>
-              <img src={"/img/gurme.webp"} />
+              <img src={"/img/Cowboy.webp"} />
             </Box>
             <Box className={"review-box"}>
-              <img src={"/img/sweets.webp"} />
+              <img src={"/img/scarlet.webp"} />
             </Box>
             <Box className={"review-box"}>
-              <img src={"/img/seafood.webp"} />
+              <img src={"/img/Adele.webp"} />
             </Box>
             <Box className={"review-box"}>
-              <img src={"/img/doner.webp"} />
+              <img src={"/img/Jameson.webp"} />
             </Box>
           </Stack>
         </Container>

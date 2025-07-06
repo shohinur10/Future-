@@ -31,19 +31,19 @@ export default function HomePage() {
         page: 1,
         limit: 4,
         order: "productViews", // ✅ Use correct value your API expects
-        productCategory:  ProductCategory.BED,
+        productCategory:  ProductCategory.BEDROOM,
         search: "",
       })
       .then((data) => dispatch(setPopularDishes(data)))
       .catch((err) => console.log("Popular dishes error:", err));
 
-    // 🔥 New Dishes
+    // 🔥 NEW ARRIVES
     product
       .getProducts({
         page: 1,
         limit: 4,
         order: "createdAt", // ✅ Adjust based on backend needs
-        productCategory:   ProductCategory.BED,
+        productCategory:   ProductCategory.BEDROOM,
         search: "",
       })
       .then((data) => dispatch(setNewDishes(data)))

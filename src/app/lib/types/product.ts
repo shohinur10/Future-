@@ -1,4 +1,4 @@
-import { ProductCategory, ProductColor, ProductMaterial, ProductStatus, ProductStyle } from "../enums/product.enum";
+import { ProductCategory, ProductStatus, ProductMaterialType, ProductStyleType } from '../enums/product.enum';
 
 
 
@@ -13,9 +13,8 @@ export interface Product {
   productViews: number;
   productStatus: ProductStatus;
   productCategory: ProductCategory;
-  productMaterial: ProductMaterial;
-  productColor: ProductColor;
-  productStyle: ProductStyle;
+  productMaterialType: ProductMaterialType;
+  productStyleType: ProductStyleType;
   createdAt: Date;
   updatedAt: Date;
 }

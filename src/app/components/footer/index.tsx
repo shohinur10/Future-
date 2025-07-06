@@ -23,9 +23,13 @@ export default function Footer() {
               <img width={"100px"} src={"/icons/burak.svg"} />
             </Box>
             <Box className={"foot-desc-txt"}>
-              Focusing on the gourmet Turkish breakfast as well as the youth
-              society, CZN Burak Gurme aims to bring Turkish cuisine back. CZN
-              Burak Gurme creates an illusion with its cuisine.
+            Focusing on the lifestyle of the future and the dynamic tastes of 
+            the youth generation, Future company aims to redefine living spaces.
+             By blending functionality with innovative design, we create the illusion of
+              spacious, smart, and stylish environments — making the future of furniture
+               both practical and inspiring.
+
+
             </Box>
             <Box className="sns-context">
               <img src={"/icons/facebook.svg"} />
@@ -37,7 +41,7 @@ export default function Footer() {
           <Stack sx={{ ml: "288px" }} flexDirection={"row"}>
             <Stack>
               <Box>
-                <Box className={"foot-category-title"}>Bo'limlar</Box>
+                <Box className={"foot-category-title"}>Categories </Box>
                 <Box className={"foot-category-link"}>
                   <Link to="/">Home</Link>
                   <Link to="/products">Products</Link>
@@ -57,19 +61,19 @@ export default function Footer() {
                 >
                   <Box flexDirection={"row"} className={"find-us"}>
                     <span>L.</span>
-                    <div>Downtown, Dubai</div>
+                    <div>Metropolitan, Incheon </div>
                   </Box>
                   <Box className={"find-us"}>
                     <span>P.</span>
-                    <div>+971 4 554 7777</div>
+                    <div> +82105555555 </div>
                   </Box>
                   <Box className={"find-us"}>
                     <span>E.</span>
-                    <div>devexuz@gmail.com</div>
+                    <div>ergashevshohinur18@gmail.com</div>
                   </Box>
                   <Box className={"find-us"}>
                     <span>H.</span>
-                    <div>Visit 24 hours</div>
+                    <div>Visit 12 hours</div>
                   </Box>
                 </Box>
               </Box>
@@ -81,7 +85,7 @@ export default function Footer() {
           sx={{ mt: "80px" }}
         ></Stack>
         <Stack className={"copyright-txt"}>
-          © Copyright Devex Global, All rights reserved.
+          © Copyright Future Global, All rights reserved.
         </Stack>
       </Container>
     </Footers>
