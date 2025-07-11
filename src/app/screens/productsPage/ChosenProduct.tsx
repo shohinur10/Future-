@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Container, Stack, Box } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import Divider from "../../components/divider";
+
 import Button from "@mui/material/Button";
 import Rating from "@mui/material/Rating";
 import "swiper/css";
@@ -56,7 +56,11 @@ export default function ChosenProduct(props: ChosenProductProps) {
     const product = new ProductService();
     product
       .getProduct(productId)
-      .then((data) => setChosenProduct(data))
+      .then((data) => {
+        if (data) {
+          setChosenProduct(data);
+        }
+      })
       .catch((err) => console.log(err));
 
     const member = new MemberService();
@@ -110,7 +114,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
                 ? chosenProduct?.productDesc
                 : "No Description"}
             </p>
-            <Divider height="1" width="100%" bg="#000000" />
+            
             <div className={"product-price"}>
               <span>Price:</span>
               <span>${chosenProduct?.productPrice}</span>

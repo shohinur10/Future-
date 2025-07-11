@@ -26,16 +26,20 @@ class ProductService {
     }
   }
 
-  public async getProduct(productId: string): Promise<Product> {
+  public async getProduct(productId: string): Promise<Product | null> {
     try {
       const url = `${this.path}/product/${productId}`;
       const result = await axios.get(url, { withCredentials: true });
       console.log("getProduct:", result);
-
       return result.data;
-    } catch (err) {
-      console.log("Error, getProduct:", err);
-      throw err;
+    } catch (err: any) {
+      if (err.response?.status === 404) {
+        console.warn(`Product with ID ${productId} not found.`);
+        return null; // Or handle it how you prefer
+      } else {
+        console.error("Unexpected error in getProduct:", err);
+        throw err;
+      }
     }
   }
 }

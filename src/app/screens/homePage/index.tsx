@@ -12,7 +12,7 @@ import { Member } from "../../lib/types/member";
 
 import "../../../css/home.css";
 import { AppDispatch } from "../../../store";
-import Statistics from "./Statistics";
+
 import PopularDishes from "./PopularDishes";
 import NewDishes from "./NewDishes";
 import Advertisement from "./Advsertisement";
@@ -59,7 +59,7 @@ export default function HomePage() {
 
   return (
     <div className="homepage">
-      <Statistics />
+      
       <PopularDishes />
       <NewDishes />
       <Advertisement />
