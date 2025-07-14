@@ -338,7 +338,7 @@ export default function Products(props: ProductsProps) {
         </Stack>
       </Container>
 
-      <div className={"brands-logo"}>
+      {/* <div className={"brands-logo"}>
         <Container className={"family-brands"}>
           <Box className={"category-title"}>Our Family Brands</Box>
           <Stack className={"brand-list"}>
@@ -356,7 +356,7 @@ export default function Products(props: ProductsProps) {
             </Box>
           </Stack>
         </Container>
-      </div>
+      </div> */}
 
       <div className={"address"}>
         <Container>
