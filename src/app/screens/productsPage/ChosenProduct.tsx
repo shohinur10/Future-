@@ -12,9 +12,9 @@ import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setRestaurant, setChosenProduct } from "./slice";
+import {  setChosenProduct, setFounder } from "./slice";
 import { createSelector } from "reselect";
-import { retrieveChosenProduct, retrieveRestaurant } from "./selector";
+import { retrieveChosenProduct, retrieveFounder} from "./selector";
 import { Product } from "../../lib/types/product";
 import { useParams } from "react-router-dom";
 import ProductService from "../../services/ProductService";
@@ -25,7 +25,7 @@ import { CartItem } from "../../lib/types/search";
 
 /** REDUX SLICE & SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
-  setRestaurant: (data: Member) => dispatch(setRestaurant(data)),
+  setFounder: (data: Member) => dispatch(setFounder(data)),
   setChosenProduct: (data: Product) => dispatch(setChosenProduct(data)),
 });
 const chosenProductRetriever = createSelector(
@@ -34,10 +34,10 @@ const chosenProductRetriever = createSelector(
     chosenProduct,
   })
 );
-const restaurantRetriever = createSelector(
-  retrieveRestaurant,
-  (restaurant) => ({
-    restaurant,
+const founderRetriever = createSelector(
+  retrieveFounder,
+  (founder) => ({
+    founder,
   })
 );
 
@@ -48,9 +48,9 @@ interface ChosenProductProps {
 export default function ChosenProduct(props: ChosenProductProps) {
   const { onAdd } = props;
   const { productId } = useParams<{ productId: string }>();
-  const { setRestaurant, setChosenProduct } = actionDispatch(useDispatch());
+  const { setFounder, setChosenProduct } = actionDispatch(useDispatch());
   const { chosenProduct } = useSelector(chosenProductRetriever);
-  const { restaurant } = useSelector(restaurantRetriever);
+  const { founder } = useSelector(founderRetriever);
 
   useEffect(() => {
     const product = new ProductService();
@@ -65,8 +65,8 @@ export default function ChosenProduct(props: ChosenProductProps) {
 
     const member = new MemberService();
     member
-      .getRestaurant()
-      .then((data) => setRestaurant(data))
+      .getFounder()
+      .then((data) => setFounder(data))
       .catch((err) => console.log(err));
   }, [productId]);
 
@@ -98,8 +98,8 @@ export default function ChosenProduct(props: ChosenProductProps) {
             <strong className={"product-name"}>
               {chosenProduct?.productName}
             </strong>
-            <span className={"resto-name"}>{restaurant?.memberNick}</span>
-            <span className={"resto-name"}>{restaurant?.memberPhone}</span>
+            <span className={"founder-name"}>{founder?.memberNick}</span>
+            <span className={"founder-name"}>{founder?.memberPhone}</span>
             <Box className={"rating-box"}>
               <Rating name="half-rating" defaultValue={2.5} precision={0.5} />
               <div className={"evaluation-box"}>

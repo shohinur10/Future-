@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ProductsPageState } from "../../lib/types/screen";
 
 const initialState: ProductsPageState = {
-  restaurant: null,
+  founder: null,
   chosenProduct: null,
   products: [],
 };
@@ -11,8 +11,8 @@ const productsPageSlice = createSlice({
   name: "productsPage",
   initialState,
   reducers: {
-    setRestaurant: (state, action) => {
-      state.restaurant = action.payload;
+    setFounder: (state, action) => {
+      state.founder= action.payload;
     },
     setChosenProduct: (state, action) => {
       state.chosenProduct = action.payload;
@@ -23,7 +23,7 @@ const productsPageSlice = createSlice({
   },
 });
 
-export const { setRestaurant, setChosenProduct, setProducts } =
+export const { setFounder, setChosenProduct, setProducts } =
   productsPageSlice.actions;
 
 const  ProductsPageReducer = productsPageSlice.reducer;

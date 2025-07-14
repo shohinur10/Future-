@@ -63,9 +63,9 @@ export default function Products(props: ProductsProps) {
 
   /** HANDLERS **/
 
-  const searchCollectionHandler = (collection:  ProductCategory) => {
+  const searchCategoryHandler = (category:  ProductCategory) => {
     productSearch.page = 1;
-    productSearch.productCategory = collection;
+    productSearch.productCategory = category;
     setProductSearch({ ...productSearch });
   };
 
@@ -171,7 +171,7 @@ export default function Products(props: ProductsProps) {
                       : "secondary"
                   }
                   onClick={() =>
-                    searchCollectionHandler(ProductCategory.OTHER)
+                    searchCategoryHandler(ProductCategory.OTHER)
                   }
                 >
                   OTHER
@@ -184,7 +184,7 @@ export default function Products(props: ProductsProps) {
                       : "secondary"
                   }
                   onClick={() =>
-                    searchCollectionHandler( ProductCategory.KITCHEN)
+                    searchCategoryHandler( ProductCategory.KITCHEN)
                   }
                 >
                   KITCHEN
@@ -198,7 +198,7 @@ export default function Products(props: ProductsProps) {
                       : "secondary"
                   }
                   onClick={() =>
-                    searchCollectionHandler(ProductCategory.BEDROOM)
+                    searchCategoryHandler(ProductCategory.BEDROOM)
                   }
                 >
                   BEDROOM
@@ -211,7 +211,7 @@ export default function Products(props: ProductsProps) {
                       : "secondary"
                   }
                   onClick={() =>
-                    searchCollectionHandler(ProductCategory.OUTDOOR)
+                    searchCategoryHandler(ProductCategory.OUTDOOR)
                   }
                 >
                OUTDOOR
@@ -224,7 +224,7 @@ export default function Products(props: ProductsProps) {
                       : "secondary"
                   }
                   onClick={() =>
-                    searchCollectionHandler( ProductCategory.OFFICE)
+                    searchCategoryHandler( ProductCategory.OFFICE)
                   }
                 >
                   OFFICE
@@ -237,7 +237,7 @@ export default function Products(props: ProductsProps) {
                       : "secondary"
                   }
                   onClick={() =>
-                    searchCollectionHandler( ProductCategory.KIDS)
+                    searchCategoryHandler( ProductCategory.KIDS)
                   }
                 >
                   KIDS

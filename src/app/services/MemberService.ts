@@ -22,16 +22,16 @@ class MemberService {
     }
   }
 
-  public async getRestaurant(): Promise<Member> {
+  public async getFounder(): Promise<Member> {
     try {
-      const url = this.path + "/member/restaurant";
+      const url = this.path + "/member/founder";
       const result = await axios.get(url);
-      console.log("getRestaurant:", result);
+      console.log("getFounder:", result);
 
-      const restaurant: Member = result.data;
-      return restaurant;
+      const founder: Member = result.data;
+      return founder;
     } catch (err) {
-      console.log("Error, getRestaurant:", err);
+      console.log("Error, getFounder:", err);
       throw err;
     }
   }
@@ -91,14 +91,15 @@ class MemberService {
      formData.append("memberDesc", input.memberDesc || "")
      formData.append("memberImage", input.memberImage || "");
 
-      const result = await axios(`${serverApi}/member/update`, {
-        method: "POST",
-       data: formData,
-       withCredentials: true,
-       headers: {
-         "Content-Type": "multipart/form-data",
+     const result = await axios(`${this.path}/member/update`, {
+      method: "POST",
+      data: formData,
+      withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
-      });
+    });
+    
      console.log("updateMember:", result);
 
       const member: Member = result.data;
