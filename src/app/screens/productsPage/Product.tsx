@@ -17,7 +17,7 @@ import { Product, ProductInquiry } from "../../lib/types/product";
 import ProductService from "../../services/ProductService";
 import { ProductCategory} from "../../lib/enums/product.enum";
 import { serverApi } from "../../lib/config";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CartItem } from "../../lib/types/search";
 
 /** REDUX SLICE & SELECTOR */
@@ -44,7 +44,7 @@ export default function Products(props: ProductsProps) {
     search: "",
   });
   const [searchText, setSearchText] = useState<string>("");
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const product = new ProductService();
@@ -52,14 +52,14 @@ export default function Products(props: ProductsProps) {
       .getProducts(productSearch)
       .then((data) => setProducts(data))
       .catch((err) => console.log(err));
-  }, [productSearch]);
+  }, [productSearch, setProducts]);
 
   useEffect(() => {
-    if (searchText === "") {
+    if (productSearch.search && productSearch.search.length === 0) {
       productSearch.search = "";
       setProductSearch({ ...productSearch });
     }
-  }, [searchText]);
+  }, [productSearch, setProductSearch]);
 
   /** HANDLERS **/
 
@@ -85,8 +85,8 @@ export default function Products(props: ProductsProps) {
     setProductSearch({ ...productSearch });
   };
 
-  const chooseDishHandler = (id: string) => {
-    history.push(`/products/${id}`);
+  const chosenProductHandler = (id: string) => {
+    navigate(`/products/${id}`);
   };
 
   return (
@@ -249,15 +249,11 @@ export default function Products(props: ProductsProps) {
               {products.length !== 0 ? (
                 products.map((product: Product) => {
                   const imagePath = `${serverApi}/${product.productImages[0]}`;
-                  const sizeVolume =
-                    product.productCategory===  ProductCategory.KITCHEN
-                      ? product.productMaterialType+ " wood"
-                      : product.productStyleType + " modern";
                   return (
                     <Stack
                       key={product._id}
                       className={"product-card"}
-                      onClick={() => chooseDishHandler(product._id)}
+                      onClick={() => chosenProductHandler(product._id)}
                     >
                       <Stack
                         className={"product-img"}
@@ -278,8 +274,12 @@ export default function Products(props: ProductsProps) {
                           }}
                         >
                           <img
-                            src={"/icons/shopping-cart.svg"}
-                            style={{ display: "flex" }}
+                            src={imagePath}
+                            alt={product.productName}
+                                                         onError={(e) => {
+                               const target = e.target as HTMLImageElement;
+                               target.src = "/img/default-furniture.svg";
+                             }}
                           />
                         </Button>
                         <Button className={"view-btn"} sx={{ right: "36px" }}>
@@ -343,16 +343,40 @@ export default function Products(props: ProductsProps) {
           <Box className={"category-title"}>Our Family Brands</Box>
           <Stack className={"brand-list"}>
             <Box className={"review-box"}>
-              <img src={"/img/Cowboy.webp"} />
+              <img 
+                src={"/img/Cowboy.webp"}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "/icons/default-user.svg";
+                }}
+              />
             </Box>
             <Box className={"review-box"}>
-              <img src={"/img/scarlet.webp"} />
+              <img 
+                src={"/img/scarlet.webp"}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "/icons/default-user.svg";
+                }}
+              />
             </Box>
             <Box className={"review-box"}>
-              <img src={"/img/Adele.webp"} />
+              <img 
+                src={"/img/Adele.webp"}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "/icons/default-user.svg";
+                }}
+              />
             </Box>
             <Box className={"review-box"}>
-              <img src={"/img/Jameson.webp"} />
+              <img 
+                src={"/img/Jameson.webp"}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "/icons/default-user.svg";
+                }}
+              />
             </Box>
           </Stack>
         </Container>

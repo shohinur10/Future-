@@ -5,6 +5,7 @@ export interface Member {
         memberType: MemberType; // Optional
         memberStatus: MemberStatus; // Optional
         memberNick: string; // Required
+        memberEmail?: string; // Optional - for email support
         memberPhone: string; // Required
         memberPassword?: string; // Required
         memberDesc?: string; // Optional
@@ -18,6 +19,7 @@ export interface MemberInput {
     memberType?: MemberType; // Optional
     memberStatus?: MemberStatus; // Optional
     memberNick: string; // Required
+    memberEmail?: string; // Optional - for email support
     memberPhone: string; // Required
     memberPassword: string; // Required
     memberDesc?: string; // Optional
@@ -27,11 +29,13 @@ export interface MemberInput {
 }
 
 export interface LoginInput {
-    memberNick:string;
-    memberPassword:string;
+    memberNick?: string; // Optional - can login with username OR email
+    memberEmail?: string; // Optional - can login with username OR email
+    memberPassword: string; // Required
 }
 export interface MemberUpdateInput {
         memberNick?: string; // Required
+        memberEmail?: string; // Optional - for email support
         memberPhone?: string; // Required
         memberPassword?: string; // Required
         memberDesc?: string; // Optional

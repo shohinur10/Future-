@@ -1,15 +1,28 @@
 import React, { useState } from "react";
 import {
   Backdrop,
-  Fab,
+  Button,
   Fade,
   Modal,
   Stack,
   TextField,
-  Box
+  Box,
+  Typography,
+  IconButton,
+  InputAdornment,
+  Alert,
+  Divider,
+  Tab,
+  Tabs
 } from "@mui/material";
 import styled from "styled-components";
-import LoginIcon from "@mui/icons-material/Login";
+import CloseIcon from "@mui/icons-material/Close";
+import EmailIcon from "@mui/icons-material/Email";
+import PersonIcon from "@mui/icons-material/Person";
+import PhoneIcon from "@mui/icons-material/Phone";
+import LockIcon from "@mui/icons-material/Lock";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { T } from "../../lib/types/common";
 import { Messages } from "../../lib/config";
 import { LoginInput, MemberInput } from "../../lib/types/member";
@@ -17,13 +30,53 @@ import MemberService from "../../services/MemberService";
 import { sweetErrorHandling } from "../../lib/sweetAlert";
 import { useGlobals } from "../hooks/useGlobals";
 
-const ModalImg = styled.img`
-  width: 62%;
-  height: 100%;
-  border-radius: 10px;
-  background: #000;
-  margin-top: 9px;
-  margin-left: 10px;
+const StyledModal = styled(Modal)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ModalContainer = styled(Box)`
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  outline: none;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+  position: relative;
+`;
+
+const BrandSection = styled(Box)`
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("/img/furniture.webp") center/cover;
+    opacity: 0.1;
+    z-index: 0;
+  }
+`;
+
+const FormSection = styled(Box)`
+  padding: 40px;
+  width: 100%;
+  position: relative;
 `;
 
 interface AuthenticationModalProps {
@@ -36,14 +89,35 @@ interface AuthenticationModalProps {
 export default function AuthenticationModal(props: AuthenticationModalProps) {
   const { signupOpen, loginOpen, handleSignupClose, handleLoginClose } = props;
   const [memberNick, setMemberNick] = useState<string>("");
+  const [memberEmail, setMemberEmail] = useState<string>("");
   const [memberPhone, setMemberPhone] = useState<string>("");
   const [memberPassword, setMemberPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loginMethod, setLoginMethod] = useState<'email' | 'username'>('email');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const { setAuthMember } = useGlobals();
 
   /** HANDLERS **/
-  const handleUsername = (e: T) => setMemberNick(e.target.value);
-  const handlePhone = (e: T) => setMemberPhone(e.target.value);
-  const handlePassword = (e: T) => setMemberPassword(e.target.value);
+  const handleUsername = (e: T) => {
+    setMemberNick(e.target.value);
+    setError("");
+  };
+  
+  const handleEmail = (e: T) => {
+    setMemberEmail(e.target.value);
+    setError("");
+  };
+  
+  const handlePhone = (e: T) => {
+    setMemberPhone(e.target.value);
+    setError("");
+  };
+  
+  const handlePassword = (e: T) => {
+    setMemberPassword(e.target.value);
+    setError("");
+  };
 
   const handlePasswordKeyDown = (e: T) => {
     if (e.key === "Enter") {
@@ -51,107 +125,396 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
     }
   };
 
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone: string) => {
+    const phoneRegex = /^[+]?[\d\s\-\(\)]+$/;
+    return phoneRegex.test(phone) && phone.length >= 10;
+  };
+
+  const resetForm = () => {
+    setMemberNick("");
+    setMemberEmail("");
+    setMemberPhone("");
+    setMemberPassword("");
+    setError("");
+    setLoading(false);
+  };
+
   const handleSignupRequest = async () => {
     try {
-      if (!memberNick || !memberPhone || !memberPassword)
-        throw new Error(Messages.error3);
+      setLoading(true);
+      setError("");
+
+      // Validation
+      if (!memberNick.trim()) {
+        throw new Error("Username is required");
+      }
+      if (!memberEmail.trim() || !validateEmail(memberEmail)) {
+        throw new Error("Please enter a valid email address");
+      }
+      if (!memberPhone.trim() || !validatePhone(memberPhone)) {
+        throw new Error("Please enter a valid phone number");
+      }
+      if (!memberPassword || memberPassword.length < 6) {
+        throw new Error("Password must be at least 6 characters long");
+      }
 
       const signupInput: MemberInput = {
-        memberNick,
-        memberPhone,
+        memberNick: memberNick.trim(),
+        memberEmail: memberEmail.trim(),
+        memberPhone: memberPhone.trim(),
         memberPassword,
       };
 
       const member = new MemberService();
       const result = await member.signup(signupInput);
       setAuthMember(result);
+      resetForm();
       handleSignupClose();
-    } catch (err) {
-      console.log(err);
-      handleSignupClose();
-      sweetErrorHandling(err).then();
+    } catch (err: any) {
+      setError(err.message || "Signup failed. Please try again.");
+      setLoading(false);
     }
   };
 
   const handleLoginRequest = async () => {
     try {
-      if (!memberNick || !memberPassword) throw new Error(Messages.error3);
+      setLoading(true);
+      setError("");
 
-      const loginInput: LoginInput = {
-        memberNick,
-        memberPassword,
-      };
+      const loginValue = loginMethod === 'email' ? memberEmail : memberNick;
+      
+      if (!loginValue.trim() || !memberPassword) {
+        throw new Error("Please fill in all fields");
+      }
+
+      if (loginMethod === 'email' && !validateEmail(memberEmail)) {
+        throw new Error("Please enter a valid email address");
+      }
+
+      const loginInput: LoginInput = loginMethod === 'email' 
+        ? { memberEmail: memberEmail.trim(), memberPassword }
+        : { memberNick: memberNick.trim(), memberPassword };
 
       const member = new MemberService();
       const result = await member.login(loginInput);
       setAuthMember(result);
+      resetForm();
       handleLoginClose();
-    } catch (err) {
-      console.log(err);
-      handleLoginClose();
-      sweetErrorHandling(err).then();
+    } catch (err: any) {
+      setError(err.message || "Login failed. Please check your credentials.");
+      setLoading(false);
     }
   };
 
-  const PaperStyle: React.CSSProperties = {
-    backgroundColor: "#fff",
-    border: "2px solid #000",
-    boxShadow: "0px 4px 20px rgba(0,0,0,0.2)",
-    padding: "20px",
-    display: "flex",
-    flexDirection: "row",
+  const handleClose = () => {
+    resetForm();
+    if (signupOpen) handleSignupClose();
+    if (loginOpen) handleLoginClose();
   };
 
   return (
-    <div>
+    <>
       {/* Signup Modal */}
-      <Modal
+      <StyledModal
         open={signupOpen}
-        onClose={handleSignupClose}
+        onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{ timeout: 500 }}
       >
         <Fade in={signupOpen}>
-          <Box sx={PaperStyle} width="800px">
-            <ModalImg src="/img/auth.webp" alt="camera" />
-            <Stack sx={{ marginLeft: "40px", width: "100%", alignItems: "center" }}>
-              <h2>Signup Form</h2>
-              <TextField label="username" variant="outlined" sx={{ mt: 1 }} onChange={handleUsername} />
-              <TextField label="phone number" variant="outlined" sx={{ my: 2 }} onChange={handlePhone} />
-              <TextField label="password" variant="outlined" type="password" onChange={handlePassword} onKeyDown={handlePasswordKeyDown} />
-              <Fab variant="extended" color="primary" sx={{ mt: 3, width: 120 }} onClick={handleSignupRequest}>
-                <LoginIcon sx={{ mr: 1 }} />
-                Signup
-              </Fab>
-            </Stack>
-          </Box>
+          <ModalContainer sx={{ width: { xs: '95%', sm: '600px', md: '800px' }, display: 'flex' }}>
+            <IconButton
+              onClick={handleClose}
+              sx={{
+                position: 'absolute',
+                right: 16,
+                top: 16,
+                zIndex: 10,
+                color: 'white',
+                backgroundColor: 'rgba(0,0,0,0.2)',
+                '&:hover': { backgroundColor: 'rgba(0,0,0,0.4)' }
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            
+            <BrandSection sx={{ width: { xs: '100%', md: '350px' }, position: 'relative', zIndex: 1 }}>
+              <Box sx={{ position: 'relative', zIndex: 2 }}>
+                <Typography variant="h3" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '1.5rem', md: '2rem' } }}>
+                  Future Furniture
+                </Typography>
+                <Typography variant="body1" sx={{ opacity: 0.9, lineHeight: 1.6 }}>
+                  Join our community and discover amazing furniture collections for your dream space.
+                </Typography>
+              </Box>
+            </BrandSection>
+
+            <FormSection sx={{ width: { xs: '100%', md: '450px' } }}>
+              <Typography variant="h4" sx={{ fontWeight: 600, mb: 1, color: '#2c3e50' }}>
+                Create Account
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#7f8c8d', mb: 4 }}>
+                Join Future Furniture today
+              </Typography>
+
+              {error && (
+                <Alert severity="error" sx={{ mb: 3 }}>
+                  {error}
+                </Alert>
+              )}
+
+              <Stack spacing={3}>
+                <TextField
+                  label="Username"
+                  variant="outlined"
+                  fullWidth
+                  value={memberNick}
+                  onChange={handleUsername}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <PersonIcon color="action" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                <TextField
+                  label="Password"
+                  variant="outlined"
+                  fullWidth
+                  type={showPassword ? "text" : "password"}
+                  value={memberPassword}
+                  onChange={handlePassword}
+                  onKeyDown={handlePasswordKeyDown}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LockIcon color="action" />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                <TextField
+                  label="Email Address"
+                  variant="outlined"
+                  fullWidth
+                  type="email"
+                  value={memberEmail}
+                  onChange={handleEmail}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <EmailIcon color="action" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                <TextField
+                  label="Phone Number"
+                  variant="outlined"
+                  fullWidth
+                  value={memberPhone}
+                  onChange={handlePhone}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <PhoneIcon color="action" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                <Button
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  onClick={handleSignupRequest}
+                  disabled={loading}
+                  sx={{
+                    py: 1.5,
+                    background: 'linear-gradient(45deg, #667eea 30%, #764ba2 90%)',
+                    borderRadius: '12px',
+                    fontWeight: 600,
+                    textTransform: 'none',
+                    fontSize: '1rem',
+                    '&:hover': {
+                      background: 'linear-gradient(45deg, #5a67d8 30%, #6b46c1 90%)',
+                    }
+                  }}
+                >
+                  {loading ? "Creating Account..." : "Sign Up"}
+                </Button>
+              </Stack>
+            </FormSection>
+          </ModalContainer>
         </Fade>
-      </Modal>
+      </StyledModal>
 
       {/* Login Modal */}
-      <Modal
+      <StyledModal
         open={loginOpen}
-        onClose={handleLoginClose}
+        onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{ timeout: 500 }}
       >
         <Fade in={loginOpen}>
-          <Box sx={PaperStyle} width="700px">
-            <ModalImg src="/img/auth.webp" alt="camera" />
-            <Stack sx={{ marginLeft: "40px", width: "100%", alignItems: "center" }}>
-              <h2>Login Form</h2>
-              <TextField label="username" variant="outlined" sx={{ mt: 2, mb: 2 }} onChange={handleUsername} />
-              <TextField label="password" variant="outlined" type="password" onChange={handlePassword} onKeyDown={handlePasswordKeyDown} />
-              <Fab variant="extended" color="primary" sx={{ mt: 3, width: 120 }} onClick={handleLoginRequest}>
-                <LoginIcon sx={{ mr: 1 }} />
-                Login
-              </Fab>
-            </Stack>
-          </Box>
+          <ModalContainer sx={{ width: { xs: '95%', sm: '500px', md: '700px' }, display: 'flex' }}>
+            <IconButton
+              onClick={handleClose}
+              sx={{
+                position: 'absolute',
+                right: 16,
+                top: 16,
+                zIndex: 10,
+                color: 'white',
+                backgroundColor: 'rgba(0,0,0,0.2)',
+                '&:hover': { backgroundColor: 'rgba(0,0,0,0.4)' }
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+
+            <BrandSection sx={{ width: { xs: '100%', md: '300px' }, position: 'relative', zIndex: 1 }}>
+              <Box sx={{ position: 'relative', zIndex: 2 }}>
+                <Typography variant="h3" sx={{ fontWeight: 700, mb: 2, fontSize: { xs: '1.5rem', md: '2rem' } }}>
+                  Welcome Back
+                </Typography>
+                <Typography variant="body1" sx={{ opacity: 0.9, lineHeight: 1.6 }}>
+                  Sign in to your Future Furniture account
+                </Typography>
+              </Box>
+            </BrandSection>
+
+            <FormSection sx={{ width: { xs: '100%', md: '400px' } }}>
+              <Typography variant="h4" sx={{ fontWeight: 600, mb: 1, color: '#2c3e50' }}>
+                Sign In
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#7f8c8d', mb: 3 }}>
+                Welcome back to Future Furniture
+              </Typography>
+
+              <Tabs
+                value={loginMethod}
+                onChange={(e, newValue) => setLoginMethod(newValue)}
+                sx={{ mb: 3 }}
+                variant="fullWidth"
+              >
+                <Tab label="Email" value="email" />
+                <Tab label="Username" value="username" />
+              </Tabs>
+
+              {error && (
+                <Alert severity="error" sx={{ mb: 3 }}>
+                  {error}
+                </Alert>
+              )}
+
+              <Stack spacing={3}>
+                {loginMethod === 'email' ? (
+                  <TextField
+                    label="Email Address"
+                    variant="outlined"
+                    fullWidth
+                    type="email"
+                    value={memberEmail}
+                    onChange={handleEmail}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <EmailIcon color="action" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                ) : (
+                  <TextField
+                    label="Username"
+                    variant="outlined"
+                    fullWidth
+                    value={memberNick}
+                    onChange={handleUsername}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <PersonIcon color="action" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                )}
+
+                <TextField
+                  label="Password"
+                  variant="outlined"
+                  fullWidth
+                  type={showPassword ? "text" : "password"}
+                  value={memberPassword}
+                  onChange={handlePassword}
+                  onKeyDown={handlePasswordKeyDown}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LockIcon color="action" />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                <Button
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  onClick={handleLoginRequest}
+                  disabled={loading}
+                  sx={{
+                    py: 1.5,
+                    background: 'linear-gradient(45deg, #667eea 30%, #764ba2 90%)',
+                    borderRadius: '12px',
+                    fontWeight: 600,
+                    textTransform: 'none',
+                    fontSize: '1rem',
+                    '&:hover': {
+                      background: 'linear-gradient(45deg, #5a67d8 30%, #6b46c1 90%)',
+                    }
+                  }}
+                >
+                  {loading ? "Signing In..." : "Sign In"}
+                </Button>
+              </Stack>
+            </FormSection>
+          </ModalContainer>
         </Fade>
-      </Modal>
-    </div>
+      </StyledModal>
+    </>
   );
 }

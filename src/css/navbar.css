@@ -1,73 +1,206 @@
 .home-navbar{
     width:100%;
-    height: 773px;
+    height: 100px;
     display: flex;
-    background: url("/public/img/furniture.webp");
-    background-size: cover;;
+    background: linear-gradient(
+        135deg,
+        rgba(44, 62, 80, 0.95) 0%,
+        rgba(52, 73, 94, 0.9) 50%,
+        rgba(44, 62, 80, 0.95) 100%
+    );
+    backdrop-filter: blur(20px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
+
+.home-navbar.scrolled {
+    background: linear-gradient(
+        135deg,
+        rgba(44, 62, 80, 0.98) 0%,
+        rgba(52, 73, 94, 0.95) 50%,
+        rgba(44, 62, 80, 0.98) 100%
+    );
+    box-shadow: 0 2px 30px rgba(0,0,0,0.2);
+    height: 85px;
+}
+
 .home-navbar .navbar-container{
-   margin-top: 55px;
-   height: 642px;
+   margin-top: 0;
+   height: 100%;
+   display: flex;
+   align-items: center;
 }
+
 .home-navbar .navbar-container .menu{
-    height: 50px;
+    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding: 0 2rem;
+    width: 100%;
 }
+
 .home-navbar .navbar-container .menu .brand-logo{
-    width: 125px;
-    height: 30px;
+    width: 150px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    filter: brightness(1.1) contrast(1.1);
+    padding: 5px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+}
+
+.home-navbar .navbar-container .menu .brand-logo:hover {
+    transform: scale(1.05);
+    background: rgba(255,255,255,0.15);
+    box-shadow: 0 5px 15px rgba(255,255,255,0.2);
 }
 
 .home-navbar .navbar-container .menu .links{
-    min-width: 700px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    gap: 2.5rem;
+}
+
+.home-navbar .navbar-container .menu .auth-section{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.home-navbar .navbar-container .menu .auth-buttons{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.home-navbar .navbar-container .menu .user-section{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.home-navbar .navbar-container .menu .links .hover-line {
+    position: relative;
+    padding: 0.8rem 1.2rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.home-navbar .navbar-container .menu .links .hover-line:hover {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+}
+
+.home-navbar .navbar-container .menu .links .hover-line a {
+    color: rgba(255,255,255,0.9);
+    font-weight: 500;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.home-navbar .navbar-container .menu .links .hover-line a:hover {
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.home-navbar .navbar-container .menu .links .hover-line a.underline {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.home-navbar .navbar-container .menu .links .hover-line a::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(45deg, #ffffff, rgba(255,255,255,0.8));
+    transition: width 0.3s ease;
+    border-radius: 2px;
+}
+
+.home-navbar .navbar-container .menu .links .hover-line a:hover::after,
+.home-navbar .navbar-container .menu .links .hover-line a.underline::after {
+    width: 100%;
 }
 
 .home-navbar .navbar-container .menu .links .login-button{
-    background: #3777CC;
-     color: #f8f8ff
+    background: linear-gradient(45deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));
+    color: #2c3e50;
+    border: none;
+    padding: 0.8rem 1.8rem;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+}
+
+.home-navbar .navbar-container .menu .links .login-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(255,255,255,0.3);
+    background: linear-gradient(45deg, #ffffff, rgba(255,255,255,0.9));
 }
 
 .home-navbar .navbar-container .menu .user-avatar{
     width: 50px;
     height: 50px;
-    border-radius: 24px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.8);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
+
+.home-navbar .navbar-container .menu .user-avatar:hover {
+    transform: scale(1.1);
+    border-color: #ffffff;
+    box-shadow: 0 6px 20px rgba(255,255,255,0.3);
+}
+
 .home-navbar a {
     text-decoration: none;
 }
-.home-navbar .hover-line a {
-    color:#f8f8ff;
-    z-index: 100;
-}
-.home-navbar .underline {
-    display: block;
-    content: "";
-    border-bottom: solid 2px #d7b686;
+
+.home-navbar .signup-button {
+    background: transparent;
+    color: rgba(255,255,255,0.9);
+    border: 2px solid rgba(255,255,255,0.8);
+    padding: 0.8rem 1.8rem;
+    border-radius: 30px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
-.home-navbar .hover-line:after{
-    display: block;
-    content: "";
-    border-bottom: solid 2px #d7b686;
-    transform: scale(0);
-    transition: transform 250ms ease-in-out;
+.home-navbar .signup-button:hover {
+    background: rgba(255,255,255,0.1);
+    color: #ffffff;
+    border-color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(255,255,255,0.2);
 }
 
-
-.home-navbar .hover-line:hover:after {
-    transform: scale(1);
-}
-
-.home-navbar div.hover-line:after{
-    transform-origin: 0% 50%;
-}
 
 .home-navbar .navbar-container .header-frame{
     margin-top: 142px;

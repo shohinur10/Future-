@@ -28,7 +28,6 @@ interface OtherNavbarProps {
       onRemove,
       onDelete,
       onDeleteAll,
-      setSignupOpen,
       setLoginOpen,
       handleLogoutClick,
       anchorEl,
@@ -43,7 +42,15 @@ interface OtherNavbarProps {
           <Stack className="menu">
             <Box>
               <NavLink to="/">
-                <img className="brand-logo" src="/public/icons/furniture-logo-design-vector-26988909.jpg" />
+                <img 
+                  className="brand-logo" 
+                  src="icons/furniture-logo-design-vector-26988909.jpg" 
+                  alt="Future Furniture"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = "icons/favicon.svg";
+                  }}
+                />
               </NavLink>
             </Box>
             <Stack className="links">
@@ -51,26 +58,26 @@ interface OtherNavbarProps {
                 <NavLink to="/">Home</NavLink>
               </Box>
               <Box className={"hover-line"}>
-                <NavLink to="/products" activeClassName={"underline"}>
+                <NavLink to="/products" className={({ isActive }) => isActive ? "underline" : ""}>
                   Products
                 </NavLink>
               </Box>
               {authMember ? (
                 <Box className={"hover-line"}>
-                  <NavLink to="/orders" activeClassName={"underline"}>
+                  <NavLink to="/orders" className={({ isActive }) => isActive ? "underline" : ""}>
                     Orders
                   </NavLink>
                 </Box>
               ) : null}
               {authMember ? (
                 <Box className={"hover-line"}>
-                  <NavLink to="/member-page" activeClassName={"underline"}>
+                  <NavLink to="/member-page" className={({ isActive }) => isActive ? "underline" : ""}>
                     My Page
                   </NavLink>
                 </Box>
               ) : null}
               <Box className={"hover-line"}>
-                <NavLink to="/help" activeClassName={"underline"}>
+                <NavLink to="/help" className={({ isActive }) => isActive ? "underline" : ""}>
                   Help
                 </NavLink>
               </Box>
@@ -97,10 +104,10 @@ interface OtherNavbarProps {
                   className="user-avatar"
                   src={
                     authMember?.memberImage
-                      ? `${serverApi}/${authMember?.memberImage}`
+                      ? `${serverApi}/${authMember.memberImage}`
                       : "/icons/default-user.svg"
                   }
-                  aria-haspopup={"true"}
+                  alt={authMember?.memberNick || "User avatar"}
                   onClick={handleLogoutClick}
                 />
               )}

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import { CartItem } from "../../lib/types/search";
 
@@ -8,7 +7,7 @@ const useBasket = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>(currentCart);
 
   const onAdd = (input: CartItem) => {
-    const exist: any = cartItems.find(
+    const exist: CartItem | undefined = cartItems.find(
       (item: CartItem) => item._id === input._id
     );
     if (exist) {
@@ -27,16 +26,16 @@ const useBasket = () => {
   };
 
   const onRemove = (input: CartItem) => {
-    const exist: any = cartItems.find(
+    const exist: CartItem | undefined = cartItems.find(
       (item: CartItem) => item._id === input._id
     );
-    if (exist.quantity === 1) {
+    if (exist && exist.quantity === 1) {
       const cartUpdate = cartItems.filter(
         (item: CartItem) => item._id !== input._id
       );
       setCartItems(cartUpdate);
       localStorage.setItem("cartData", JSON.stringify(cartUpdate));
-    } else {
+    } else if (exist) {
       const cartUpdate = cartItems.map((item: CartItem) =>
         item._id === input._id
           ? { ...exist, quantity: exist.quantity - 1 }

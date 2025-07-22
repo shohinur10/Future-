@@ -3,6 +3,9 @@ import { serverApi } from "../lib/config";
 import {LoginInput, Member, MemberInput, MemberUpdateInput} from "../lib/types/member";
 
 class MemberService {
+	static logoutMember() {
+		throw new Error("Method not implemented.");
+	}
   private readonly path: string;
 
   constructor() {

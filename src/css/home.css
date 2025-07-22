@@ -1,442 +1,286 @@
 .homepage{
     width:100%;
     height:auto;
+    padding-top: 100px; /* Account for fixed navbar */
 }
 
+/* Luxury Hotel-Style Hero Section */
+.hero-welcome-section {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
 
- /** Popular dishes **/
+.hero-background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(44, 62, 80, 0.9) 0%,
+        rgba(52, 73, 94, 0.8) 25%,
+        rgba(44, 62, 80, 0.7) 50%,
+        rgba(52, 73, 94, 0.8) 75%,
+        rgba(44, 62, 80, 0.9) 100%
+    );
+    z-index: 1;
+}
+
+.hero-welcome-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(44, 62, 80, 0.7) 0%,
+        rgba(52, 73, 94, 0.5) 50%,
+        rgba(44, 62, 80, 0.8) 100%
+    );
+    z-index: 1;
+}
+
+/* Hero Section Styles */
+.hero-section {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 600px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    opacity: 0.1;
+    z-index: 0;
+}
+
+.hero-section .MuiContainer-root {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-title {
+    background: linear-gradient(45deg, #2c3e50, #34495e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+ /** Popular dishes / Featured Collections **/
  .homepage .popular-dishes-frame  {
     width: 100%;
-    height: 580px;
+    min-height: 650px;
     display: flex;
-    background: #f8f8ff;
+    background: linear-gradient(
+        135deg,
+        rgba(44, 62, 80, 0.8) 0%,
+        rgba(52, 73, 94, 0.7) 25%,
+        rgba(44, 62, 80, 0.6) 50%,
+        rgba(52, 73, 94, 0.7) 75%,
+        rgba(44, 62, 80, 0.8) 100%
+    );
+    padding: 80px 0;
+    position: relative;
  }
+
+ .homepage .popular-dishes-frame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.3;
+    z-index: 0;
+ }
+
     .homepage .popular-dishes-frame .popular-section {
-        margin-top: 45px;
+    margin-top: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
+    position: relative;
+    z-index: 1;
       } 
-      .homepage .popular-dishes-frame .popular-section .category-title{
+
+  .homepage .category-section-header {
         text-align: center;
-        font-family: "Roboto Serif";
-        font-size: 36px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: normal;
-        letter-spacing: 1.44px;
-        color: #000;
+    margin-bottom: 40px;
+  }
+
+  .homepage .category-section-header .category-title {
+    color: rgba(255,255,255,0.95) !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .homepage .category-section-header .MuiTypography-subtitle1 {
+    color: rgba(255,255,255,0.85) !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
       }
 
       .homepage .popular-dishes-frame .popular-section .cards-frame {
         width: 100%;
-        margin-top: 43px;
+    margin-top: 20px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-      } 
+    gap: 25px;
+  } 
 
-      .homepage .popular-dishes-frame .cards-frame .card{
-        min-height: 430px;
-        min-width: 300px;
+  .homepage .featured-card {
+    min-height: 450px;
+    min-width: 320px;
         cursor: pointer;
-      }
+    border-radius: 16px !important;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
 
-      .homepage .popular-dishes-frame .cards-frame .card .card-cover{
+  .homepage .featured-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+  }
+
+  .homepage .card-overlay {
         background: linear-gradient(
             to top,
-            rgba(0, 0, 0, 0.4),
-            rgba(0, 0, 0, 0) 200px
-        ),
-        linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0) 300px),
-      }
-      .homepage .popular-dishes-frame .no-data {
-        width: 100%;
-        height: 300px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-transform: capitalize;
-        font-family: "Poppins";
-        font-style: normal;
-        font-weight: 400;
-        font-size: 30px;
-        line-height: 34px;
-        color: #e3c08d;
-      }
+        rgba(0, 0, 0, 0.8),
+        rgba(0, 0, 0, 0.4) 50%,
+        rgba(0, 0, 0, 0.1) 80%
+    );
+  }
 
-      /** NEW PRODUCTS **/
+  /** NEW PRODUCTS / New Arrivals **/
 
 .homepage .new-products-frame {
     width: 100%;
-    height: 605px;
-    background: #f8f8ff;
+    min-height: 650px;
+    background: linear-gradient(
+        135deg,
+        rgba(52, 73, 94, 0.8) 0%,
+        rgba(44, 62, 80, 0.7) 25%,
+        rgba(52, 73, 94, 0.6) 50%,
+        rgba(44, 62, 80, 0.7) 75%,
+        rgba(52, 73, 94, 0.8) 100%
+    );
     display: flex;
+    padding: 80px 0;
+    position: relative;
+  }
+
+  .homepage .new-products-frame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.3;
+    z-index: 0;
   }
   
   .homepage .main {
-    margin-top: 45px;
+    margin-top: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .homepage .new-products-frame .category-title {
-    font-family: "Dancing Script";
-    font-style: normal;
-    font-weight: 700;
-    font-size: 36px;
-    line-height: 43px;
+    position: relative;
+    z-index: 1;
   }
   
   .homepage .new-products-frame .main .cards-frame {
     width: 100%;
-    margin: 47px 2px 2px 2px;
+    margin: 20px 2px 2px 2px;
     flex-direction: row;
     justify-content: space-between;
+    gap: 25px;
   }
 
-  .homepage .new-products-frame .main .card {
-    height: 335px;
-    width: 290px;
-    cursor: pointer;
-  }
-  
-  .homepage .new-products-frame .product-sale {
-    position: absolute;
-    margin-top: 10px;
-    z-index: 100;
-    width: 90px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ff9200;
-    box-shadow: 4px 6px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 25px;
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 21px;
-    color: #f8f8ff;
-  }
-  
-  .homepage .new-products-frame .product-detail {
-    width: auto;
-    height: 49%;
-    display: flex;
-    justify-content: center;
-    margin-top: -12px;
-    border-top: 1px solid;
-    border-color: #f8f8ff;
-    background-color: #fafbfb;
-  }
-  .homepage .new-products-frame .product-detail .info {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .homepage .new-products-frame .product-detail .title {
-    width: 65px;
-    font-weight: 500;
-  }
-  
-  .homepage .new-products-frame .product-detail .price {
-    margin-left: 10px;
-    width: 20px;
-    font-weight: 500;
-  }
-  
-  .homepage .new-products-frame .product-detail .divider {
-    margin: 0 10px 0 10px;
-    width: 2px;
-    background-color: #d9d9d9;
-  }
-  
-  .homepage .new-products-frame .product-detail .views {
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-  }
-  .homepage .new-products-frame .no-data {
-    width: 100%;
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-transform: capitalize;
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 30px;
-    line-height: 34px;
-    color: #e3c08d;
-  }
-/** ADVERTISEMENT **/
-
-.homepage .ads-restaurant-frame {
-    width: 100%;
-    height: 693px;
-    display: flex;
-    overflow: hidden;
-    transform: perspective(0px);
-    box-shadow: -3px 0px 20px 14px #34343480;
-  }
-  
-  .homepage .ads-restaurant-frame .ads-video {
-    width: 100%;
-    background: #0c0e12;
-    display: flex;
-    box-shadow: 0px -8px 90px rgb(215 215 255);
-    transform: scale(1.5);
-    overflow: hidden;
-  }
   /** ACTIVE USERS **/
 
 .homepage .active-users-frame {
     width: 100%;
-    height: 550px;
-    background: #f8f8ff;
+    min-height: 650px;
+    background: #ffffff;
     display: flex;
-  }
-  
-  .homepage .active-users-frame .main {
-    padding-top: 60px;
+    padding: 80px 0;
+    position: relative;
+}
+
+.homepage .active-users-frame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f8f9fa' fill-opacity='0.5'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.6;
+    z-index: 0;
+}
+
+.homepage .active-users-frame .main {
+    padding-top: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .homepage .active-users-frame .category-title {
-    font-family: "Dancing Script";
-    font-style: normal;
-    font-weight: 700;
-    font-size: 36px;
-    line-height: 43px;
-  }
-  
-  .homepage .cards-frame {
+    position: relative;
+    z-index: 1;
+}
+
+.homepage .cards-frame {
     width: 100%;
     margin-top: 20px;
     flex-direction: row;
-  }
-  
-  .homepage .cards-frame .card {
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.homepage .cards-frame .card {
     margin: 5px;
     min-height: 305px;
     min-width: 305px;
     cursor: pointer;
-  }
-  
-  .homepage .cards-frame .member-nickname {
+}
+
+.homepage .cards-frame .member-nickname {
     font-size: medium;
     text-align: center;
-  }
-  
-  .homepage .cards-frame .no-data {
+}
+
+.homepage .no-data {
     width: 100%;
     height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
     text-transform: capitalize;
-    font-family: "Poppins";
+    font-family: "Poppins", sans-serif;
     font-style: normal;
     font-weight: 400;
-    font-size: 30px;
+    font-size: 24px;
     line-height: 34px;
-    color: #e3c08d;
-  }
-
-  /** EVENTS **/
-
-.homepage .events-frame {
-    width: 100%;
-    height: 745px;
-    background: #f8f8ff;
-    display: flex;
-  }
-  
-  .homepage .events-frame .category-title {
-    font-family: "Dancing Script";
-    font-style: normal;
-    font-weight: 700;
-    font-size: 36px;
-    line-height: 43px;
-    padding-top: 20px;
-  }
-  
-  .homepage .events-frame .events-main {
-    position: relative;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .homepage .events-frame .events-main .events-text {
-    width: auto;
-    height: 70px;
-    margin-bottom: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .homepage .events-frame .events-main .prev-next-frame {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 250px;
-    margin: 40px 0 40px 0;
-    height: 25px;
-  }
-  
-  .homepage .events-frame .dot-frame-pagination {
-    position: relative;
-    width: auto;
-    display: flex;
-  }
-  
-  .homepage .events-frame .events-main .events-info {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  
-  .homepage .events-frame .events-info .events-info-frame {
-    position: relative;
-    width: 500px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .homepage .events-frame .events-img {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    border-radius: 10px;
-    background-size: cover;
-  }
-  
-  .homepage .events-frame .events-desc {
-    position: absolute;
-    margin-bottom: 7px;
-    padding: 10px;
-    display: flex;
-    width: 90%;
-    height: auto;
-    bottom: 5px;
-    background: #f8f8ff;
-    box-shadow: 0px 40px 30px rgba(25, 25, 46, 0.04);
-    border-radius: 8px;
-  }
-  
-  .homepage .events-frame .events-desc .events-bott {
-    width: 97%;
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .homepage .events-frame .events-desc .events-bott .bott-left {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .homepage .events-frame .bott-left .event-title-speaker {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  
-  .homepage .events-frame .event-title-speaker .event-organizator {
-    display: flex;
-    align-items: center;
-  }
-  
-  .homepage .events-frame .event-title-speaker .event-organizator img {
-    width: 20px;
-    margin-right: 10px;
-  }
-  
-  .homepage .events-frame .event-organizator .spec-text-author {
-    font-family: "GT Walsheim Pro";
-    font-style: normal;
-    line-height: 34px;
-    color: #140342;
-  }
-  
-  .homepage .events-frame .bott-left .text-desc {
-    margin-top: 10px;
-    font-family: "GT Walsheim Pro";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 17px;
-    line-height: 26px;
-    color: #4f547b;
-  }
-  
-  .homepage .events-frame .bott-left .bott-info {
-    margin-top: 10px;
-    display: flex;
-    justify-content: flex-end;
-    flex-direction: row;
-    width: 100%;
-    height: 16px;
-  }
-  
-  .homepage .events-frame .bott-info .bott-info-main {
-    margin-left: 10px;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    width: auto;
-    height: 100%;
-    font-family: "GT Walsheim Pro";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    color: #4f547b;
-  }
-  
-  .homepage .events-frame .bott-info .bott-info-main img {
-    margin-right: 10px;
-  }
-  
-  .homepage .events-frame .swiper-wrapper {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .homepage .events-frame .swiper-pagination-bullet {
-    margin-right: 5px;
-    width: 8px;
-    height: 8px;
-    text-align: center;
-    opacity: 1;
-    background: #f8f8ff;
-    border-radius: 50%;
-  }
-  
-  .homepage .events-frame .swiper-pagination-bullet-active {
-    background: #343434;
-    border-radius: 50%;
-  }
+    color: #7f8c8d;
+    background: #f8f9fa;
+    border-radius: 16px;
+    border: 1px solid #e9ecef;
+}
   

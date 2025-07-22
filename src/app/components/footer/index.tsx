@@ -7,8 +7,14 @@ const Footers = styled.div`
   width: 100%;
   height: 590px;
   display: flex;
-  background: #343434;
+  background: linear-gradient(
+    135deg,
+    rgba(44, 62, 80, 0.95) 0%,
+    rgba(52, 73, 94, 0.9) 50%,
+    rgba(44, 62, 80, 0.95) 100%
+  );
   background-size: cover;
+  border-top: 1px solid rgba(255,255,255,0.1);
 `;
 
 export default function Footer() {
@@ -20,23 +26,68 @@ export default function Footer() {
         <Stack flexDirection={"row"} sx={{ mt: "94px" }}>
           <Stack flexDirection={"column"} style={{ width: "340px" }}>
             <Box>
-              <img width={"100px"} src={"/icons/burak.svg"} />
+              <img 
+                width={"100px"} 
+                src={"/icons/furniture-logo-design-vector-26988909.jpg"} 
+                alt="Future Furniture"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "/icons/favicon.svg";
+                }}
+              />
             </Box>
             <Box className={"foot-desc-txt"}>
             Focusing on the lifestyle of the future and the dynamic tastes of 
-            the youth generation, Future company aims to redefine living spaces.
+            the youth generation, Future Furniture company aims to redefine living spaces.
              By blending functionality with innovative design, we create the illusion of
               spacious, smart, and stylish environments — making the future of furniture
                both practical and inspiring.
 
 
             </Box>
-            <Box className="sns-context">
-              <img src={"/icons/facebook.svg"} />
-              <img src={"/icons/twitter.svg"} />
-              <img src={"/icons/instagram.svg"} />
-              <img src={"/icons/youtube.svg"} />
-            </Box>
+            <Stack className={"foot-social-icons"} direction="row" spacing={2}>
+              <img 
+                src={"/icons/facebook.svg"} 
+                alt="Facebook" 
+                style={{ 
+                  width: "40px", 
+                  height: "40px", 
+                  cursor: "pointer",
+                  transition: "transform 0.3s ease",
+              
+                }} 
+              />
+              <img 
+                src={"/icons/twitter.svg"} 
+                alt="Twitter" 
+                style={{ 
+                  width: "40px", 
+                  height: "40px", 
+                  cursor: "pointer",
+                  transition: "transform 0.3s ease" 
+                }} 
+              />
+              <img 
+                src={"/icons/instagram.svg"} 
+                alt="Instagram" 
+                style={{ 
+                  width: "40px", 
+                  height: "40px", 
+                  cursor: "pointer",
+                  transition: "transform 0.3s ease" 
+                }} 
+              />
+              <img 
+                src={"/icons/youtube.svg"} 
+                alt="YouTube" 
+                style={{ 
+                  width: "40px", 
+                  height: "40px", 
+                  cursor: "pointer",
+                  transition: "transform 0.3s ease" 
+                }} 
+              />
+            </Stack>
           </Stack>
           <Stack sx={{ ml: "288px" }} flexDirection={"row"}>
             <Stack>

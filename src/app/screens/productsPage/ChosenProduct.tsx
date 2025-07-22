@@ -53,6 +53,8 @@ export default function ChosenProduct(props: ChosenProductProps) {
   const { founder } = useSelector(founderRetriever);
 
   useEffect(() => {
+    if (!productId) return;
+    
     const product = new ProductService();
     product
       .getProduct(productId)
@@ -68,7 +70,7 @@ export default function ChosenProduct(props: ChosenProductProps) {
       .getFounder()
       .then((data) => setFounder(data))
       .catch((err) => console.log(err));
-  }, [productId]);
+  }, [productId, setChosenProduct, setFounder]);
 
   if (!chosenProduct) return null;
   return (

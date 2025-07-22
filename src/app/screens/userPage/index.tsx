@@ -4,7 +4,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGlobals } from "../../components/hooks/useGlobals";
 import { serverApi } from "../../lib/config";
 import { MemberType } from "../../lib/enums/member.enum";
@@ -12,10 +12,10 @@ import "../../../css/userPage.css";
 import { Settings } from "@mui/icons-material";
 
 export default function UserPage() {
-  const history = useHistory();
   const { authMember } = useGlobals();
+  const navigate = useNavigate();
 
-  if (!authMember) history.push("/");
+  if (!authMember) navigate("/");
   return (
     <div className={"user-page"}>
       <Container>

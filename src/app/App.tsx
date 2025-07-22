@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
-import { Switch, Route, useLocation } from "react-router-dom";
-import{Box, Button, Container, Stack,Typography} from "@mui/material";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { useGlobals } from "./components/hooks/useGlobals";
 import useBasket from "./components/hooks/useBasket";
 import MemberService from "./services/MemberService";
@@ -45,7 +43,6 @@ function App() {
       await sweetTopSuccessAlert("success", 700);
       setAuthMember(null);
     } catch (err) {
-      console.log(err);
       sweetErrorHandling(Messages.error1);
     }
   };
@@ -81,23 +78,13 @@ function App() {
           handleLogoutRequest={handleLogoutRequest}
         />
       )}
-      <Switch>
-        <Route path="/products">
-          <ProductsPage onAdd={onAdd} />
-        </Route>
-        <Route path="/orders">
-          <OrdersPage />
-        </Route>
-        <Route path="/member-page">
-          <UserPage />
-        </Route>
-        <Route path="/help">
-          <HelpPage />
-        </Route>
-        <Route path="/">
-          <HomePage />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route path="/products/*" element={<ProductsPage onAdd={onAdd} />} />
+        <Route path="/orders" element={<OrdersPage />} />
+        <Route path="/member-page" element={<UserPage />} />
+        <Route path="/help" element={<HelpPage />} />
+        <Route path="/" element={<HomePage />} />
+      </Routes>
       <Footer />
 
       <AuthenticationModal

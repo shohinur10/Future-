@@ -6,7 +6,7 @@ import Menu from "@mui/material/Menu";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CartItem } from "../../lib/types/search";
 import { Messages, serverApi } from "../../lib/config";
 import OrderService from "../../services/OrderService";
@@ -24,7 +24,7 @@ interface BasketProps {
 export default function Basket(props: BasketProps) {
   const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = props;
   const { authMember, setOrderBuilder } = useGlobals();
-  const history = useHistory();
+  const navigate = useNavigate();
   const itemsPrice: number = cartItems.reduce(
     (a: number, c: CartItem) => a + c.quantity * c.price,
     0
@@ -55,7 +55,7 @@ export default function Basket(props: BasketProps) {
       onDeleteAll();
 
       setOrderBuilder(new Date());
-      history.push("/orders");
+      navigate("/orders");
     } catch (err) {
       console.log(err);
       sweetErrorHandling(err).then();
@@ -73,7 +73,7 @@ export default function Basket(props: BasketProps) {
         onClick={handleClick}
       >
         <Badge badgeContent={cartItems.length} color="secondary">
-          <img src={"/icons/shopping-cart.svg"} />
+          <img src={"/icons/shopping-cart.svg"} alt="Shopping cart" style={{ display: "flex" }} />
         </Badge>
       </IconButton>
       <Menu
@@ -139,7 +139,7 @@ export default function Basket(props: BasketProps) {
                         onClick={() => onDelete(item)}
                       />
                     </div>
-                    <img src={imagePath} className={"product-img"} />
+                    <img src={serverApi + "/" + item.image} alt={item.name} />
                     <span className={"product-name"}>{item.name}</span>
                     <p className={"product-price"}>
                       ${item.price} x {item.quantity}

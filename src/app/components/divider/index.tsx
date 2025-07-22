@@ -19,3 +19,6 @@
 // }
 
 // export default Divider;
+
+// Empty export to make this file a module and fix TypeScript compilation error
+export {};

@@ -8,14 +8,14 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setPausedOrders, setProcessOrders, setFinishedOrders } from "./slice";
 import { Order, OrderInquiry } from "../../lib/types/order";
 import { OrderStatus } from "../../lib/enums/order.enum";
 import OrderService from "../../services/OrderService";
 import { useGlobals } from "../../components/hooks/useGlobals";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../../css/order.css";
 import { serverApi } from "../../lib/config";
 import { MemberType } from "../../lib/enums/member.enum";
@@ -23,6 +23,7 @@ import { JSX } from "react/jsx-runtime";
 import PausedOrders from "./PauseOrder";
 import ProcessOrders from "./ProcessOrder";
 import FinishedOrders from "./FinishedOrder";
+import { retrievePausedOrders, retrieveProcessOrders, retrieveFinishedOrders } from "./selector";
 
 /** REDUX SLICE & SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -32,10 +33,13 @@ const actionDispatch = (dispatch: Dispatch) => ({
 });
 
 export default function OrdersPage() {
-  const { setPausedOrders, setProcessOrders, setFinishedOrders } =
-    actionDispatch(useDispatch());
   const { orderBuilder, authMember } = useGlobals();
-  const history = useHistory();
+  const finishedOrders = useSelector(retrieveFinishedOrders);
+  const processOrders = useSelector(retrieveProcessOrders);
+  const pausedOrders = useSelector(retrievePausedOrders);
+  const { setFinishedOrders, setProcessOrders, setPausedOrders } =
+    actionDispatch(useDispatch());
+  const navigate = useNavigate();
   const [value, setValue] = useState("1");
   const [orderInquiry, setOrderInquiry] = useState<OrderInquiry>({
     page:1,
@@ -47,19 +51,19 @@ export default function OrdersPage() {
     const order = new OrderService();
 
     order
-      .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PAUSE })
-      .then((data: Order[]) =>   setPausedOrders(data))
-      .catch((err: any) => console.log(err));
+      .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PROCESS })
+      .then((data) => setProcessOrders(data))
+      .catch((err) => console.log(err));
 
     order
-      .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PROCESS })
-      .then((data: Order[]) =>  setProcessOrders(data))
-      .catch((err: any) => console.log(err));
+      .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PAUSE })
+      .then((data) => setPausedOrders(data))
+      .catch((err) => console.log(err));
 
     order
       .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.FINISH })
-      .then((data: Order[]) => setFinishedOrders(data))
-      .catch((err: any) => console.log(err));
+      .then((data) => setFinishedOrders(data))
+      .catch((err) => console.log(err));
   }, [orderInquiry, orderBuilder]);
 
   /** HANDLERS **/
@@ -68,7 +72,7 @@ export default function OrdersPage() {
     setValue(newValue);
   };
 
-  if (!authMember) history.push("/");
+  if (!authMember) navigate("/");
   return (
     <div className={"order-page"}>
       <Container className="order-container">
