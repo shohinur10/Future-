@@ -1,183 +1,421 @@
+/* Modern Help Page Styles */
 .help-page {
-    width: 100%;
-    height: auto;
-    display: flex;
-    background: #f8f8ff;
+  width: 100%;
+  min-height: 100vh;
+  background: white;
+  padding: 0;
+  margin: 0;
+}
+
+/* Hero Section */
+.help-hero {
+  background: white;
+  padding: 60px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.help-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: none;
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #1e293b;
+}
+
+.hero-title {
+  font-size: 3rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 0 !important;
+  color: #1e293b !important;
+  text-shadow: none;
+}
+
+/* Main Container */
+.help-container {
+  padding: 60px 24px !important;
+  background: white;
+  min-height: calc(100vh - 240px);
+}
+
+/* Tab Navigation */
+.tab-navigation {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+  margin-bottom: 40px !important;
+  padding: 16px 0 !important;
+}
+
+.modern-tabs .MuiTabs-indicator {
+  background: white;
+  height: 3px !important;
+  border-radius: 3px;
+}
+
+.tab-item {
+  text-transform: none !important;
+  font-weight: 600 !important;
+  font-size: 1.1rem !important;
+  color: rgba(255,255,255,0.8) !important;
+  min-height: 60px !important;
+  margin: 0 20px !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;
+}
+
+.tab-item:hover {
+  background: rgba(255,255,255,0.1) !important;
+  color: white !important;
+}
+
+.tab-item.Mui-selected {
+  color: white !important;
+  background: rgba(255,255,255,0.2) !important;
+}
+
+.tab-item .MuiSvgIcon-root {
+  margin-bottom: 8px !important;
+  font-size: 1.5rem !important;
+}
+
+/* Tab Content */
+.tab-content {
+  position: relative;
+}
+
+.tab-panel {
+  padding: 0 !important;
+}
+
+/* Content Cards */
+.content-card,
+.contact-info-card,
+.contact-form-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08) !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+  color: white !important;
+}
+
+.content-card:hover,
+.contact-info-card:hover,
+.contact-form-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.15) !important;
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 40px !important;
+  padding: 40px 20px 20px;
+}
+
+.section-icon {
+  font-size: 3rem !important;
+  color: white !important;
+  margin-bottom: 16px !important;
+}
+
+.section-title {
+  font-size: 2.5rem !important;
+  font-weight: 700 !important;
+  color: white !important;
+  margin-bottom: 12px !important;
+}
+
+.section-subtitle {
+  font-size: 1.1rem !important;
+  color: rgba(255,255,255,0.9) !important;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6 !important;
+}
+
+/* Terms Content */
+.terms-content {
+  padding: 0 40px 40px;
+}
+
+.term-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 12px;
+  border-left: 4px solid white;
+  transition: all 0.3s ease;
+}
+
+.term-item:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateX(8px);
+}
+
+.term-number {
+  background: white !important;
+  color: #667eea !important;
+  font-weight: 600 !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  margin-top: 4px;
+}
+
+.term-text {
+  font-size: 1rem !important;
+  line-height: 1.7 !important;
+  color: white !important;
+  flex: 1;
+}
+
+/* FAQ Content */
+.faq-content {
+  padding: 0 40px 40px;
+}
+
+.faq-section-title {
+  font-size: 1.3rem !important;
+  font-weight: 700 !important;
+  color: white !important;
+  margin: 32px 0 8px 0 !important;
+  padding: 16px 20px !important;
+  background: rgba(255,255,255,0.15) !important;
+  border-radius: 8px !important;
+  border-left: 4px solid white !important;
+}
+
+.faq-section-title:first-of-type {
+  margin-top: 0 !important;
+}
+
+.faq-section-desc {
+  font-size: 0.95rem !important;
+  color: rgba(255,255,255,0.8) !important;
+  margin-bottom: 20px !important;
+  padding: 0 20px !important;
+  line-height: 1.5 !important;
+  font-style: italic;
+}
+
+.faq-accordion {
+  margin-bottom: 16px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+  overflow: hidden !important;
+}
+
+.faq-accordion:before {
+  display: none !important;
+}
+
+.faq-question {
+  background: rgba(255,255,255,0.1) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.2) !important;
+  padding: 20px 24px !important;
+}
+
+.faq-question:hover {
+  background: rgba(255,255,255,0.2) !important;
+}
+
+.question-text {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+}
+
+.faq-answer {
+  padding: 24px !important;
+  background: rgba(255,255,255,0.05) !important;
+}
+
+.answer-text {
+  font-size: 1rem !important;
+  line-height: 1.6 !important;
+  color: rgba(255,255,255,0.9) !important;
+}
+
+/* Contact Section */
+.contact-info-card {
+  height: fit-content;
+}
+
+.contact-details {
+  padding: 0 20px 20px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+.contact-icon {
+  font-size: 1.8rem !important;
+  color: white !important;
+  margin-top: 4px;
+}
+
+.contact-item h6 {
+  color: white !important;
+}
+
+.contact-item .MuiTypography-body2 {
+  color: rgba(255,255,255,0.8) !important;
+}
+
+/* Contact Form */
+.form-title {
+  font-size: 1.8rem !important;
+  font-weight: 700 !important;
+  color: white !important;
+  margin-bottom: 8px !important;
+}
+
+.form-subtitle {
+  color: rgba(255,255,255,0.9) !important;
+  margin-bottom: 32px !important;
+  line-height: 1.6 !important;
+}
+
+.contact-form {
+  padding: 0 20px 20px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+  margin-bottom: 8px !important;
+  display: block;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: white;
+  background: rgba(255,255,255,0.2);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
+}
+
+.submit-button {
+  background: white !important;
+  color: #667eea !important;
+  border-radius: 12px !important;
+  padding: 16px 32px !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  box-shadow: 0 8px 25px rgba(255,255,255,0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.submit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(255,255,255,0.4) !important;
+  background: #f8f9ff !important;
+}
+
+/* Responsive Design */
+@media (max-width: 960px) {
+  .hero-title {
+    font-size: 2.5rem !important;
   }
   
-  .help-page .help-container {
-    margin-top: 50px;
-    margin-bottom: 50px;
-    flex-direction: row;
+  .section-title {
+    font-size: 2rem !important;
   }
   
-  .help-page .help-menu {
-    width: 100%;
-    height: 60px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    border-bottom: 1px solid #f8f8ff;
+  .terms-content,
+  .faq-content {
+    padding: 0 20px 20px;
   }
   
-  .help-page .help-menu .table-list {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .help-page .css-1gsv261 {
-    width: 75%;
-  }
-  
-  .help-page .css-heg063-MuiTabs-flexContainer {
-    justify-content: space-between;
-  }
-  
-  .help-page .css-19kzrtu {
-    padding-top: 24px;
-  }
-  
-  .help-page .help-main-content {
-    width: 100%;
-    height: 1000px;
-  }
-  
-  .help-page .rules-box {
-    padding: 24px;
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: #f8f8ff;
-    border: 1px solid #ededed;
-    box-shadow: 0px 20px 30px rgba(25, 25, 46, 0.04);
-    border-radius: 8px;
-  }
-  
-  .rules-box .rules-frame {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .rules-box .rules-frame p {
-    border-bottom: 1px solid #dddddd;
-    color: #000000;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    font-weight: 400;
-    font-size: 1rem;
-    letter-spacing: 0.00938em;
-  }
-  
-  .help-page .accordion-menu {
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .help-page .admin-letter-box {
-    padding: 60px;
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: #f8f8ff;
-    border: 1px solid #ededed;
-    box-shadow: 0px 20px 30px rgba(25, 25, 46, 0.04);
-    border-radius: 8px;
-  }
-  
-  .help-page .admin-letter-box .admin-letter-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .help-page .admin-letter-container .admin-letter-frame {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .help-page .admin-letter-frame span {
-    font-family: "ABeeZee";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 28px;
-    color: #140342;
-  }
-  
-  .help-page .admin-letter-frame p {
-    margin-top: 20px;
-    font-family: "Sedan";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 26px;
-    color: #4f547b;
-  }
-  
-  .help-page .admin-letter-container .admin-letter-frame {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .help-page .admin-letter-frame .admin-input-box {
-    margin-top: 30px;
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .help-page .admin-letter-frame .admin-input-box label {
-    font-family: "Verdana";
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 19px;
-    color: #140342;
-  }
-  
-  .help-page .admin-letter-frame .admin-input-box input {
-    margin-top: 10px;
+  .section-header {
     padding: 20px;
-    width: 100%;
-    height: 60px;
-    display: flex;
-    background: #f8f8ff;
-    border: 1px solid #dddddd;
-    border-radius: 8px;
-    font-family: "Verdana";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 26px;
-    color: #4f547b;
+  }
+}
+
+@media (max-width: 600px) {
+  .help-hero {
+    padding: 60px 0;
   }
   
-  .help-page .admin-letter-frame .admin-input-box textarea {
-    margin-top: 10px;
-    padding: 20px;
-    width: 100%;
-    height: 150px;
-    display: flex;
-    background: #f8f8ff;
-    border: 1px solid #dddddd;
-    border-radius: 8px;
-    font-family: "Verdana";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 26px;
-    color: #4f547b;
+  .hero-title {
+    font-size: 2rem !important;
   }
+  
+  .help-container {
+    padding: 40px 16px !important;
+  }
+  
+  .tab-item {
+    font-size: 0.9rem !important;
+    margin: 0 8px !important;
+  }
+  
+  .term-item {
+    padding: 16px;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .term-item:hover {
+    transform: none;
+  }
+}
   
