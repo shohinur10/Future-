@@ -1,6 +1,23 @@
 import React from "react";
-import { Box, Stack, Button } from "@mui/material";
+import {
+  Box,
+  Stack,
+  Card,
+  CardContent,
+  Typography,
+  Chip,
+  Avatar,
+  Divider,
+  Grid
+} from "@mui/material";
+import Button from "@mui/material/Button";
 import TabPanel from "@mui/lab/TabPanel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import moment from "moment";
 
 import { useSelector } from "react-redux";
@@ -14,7 +31,6 @@ import { OrderStatus } from "../../lib/enums/order.enum";
 import { sweetErrorHandling } from "../../lib/sweetAlert";
 import { T } from "../../lib/types/common";
 import OrderService from "../../services/OrderService";
-
 
 /** REDUX SLICE & SELECTOR */
 const processOrdersRetriever = createSelector(
@@ -32,7 +48,6 @@ export default function ProcessOrders(props: ProcessOrdersProps) {
   const { processOrders } = useSelector(processOrdersRetriever);
 
   /** HANDLERS **/
-
   const finishOrderHandler = async (e: T) => {
     try {
       if (!authMember) throw new Error(Messages.error2);
@@ -56,81 +71,178 @@ export default function ProcessOrders(props: ProcessOrdersProps) {
     }
   };
 
+  // Helper function for product image URL
+  const getProductImageUrl = (imageData: string | undefined): string => {
+    if (!imageData) return "/icons/noimage-list.svg";
+    if (imageData.startsWith('data:')) return imageData;
+    return `${serverApi}/${imageData}`;
+  };
+
   return (
     <TabPanel value={"2"}>
-      <Stack>
+      <Stack spacing={3}>
         {processOrders?.map((order: Order) => {
           return (
-            <Box key={order._id} className={"order-main-box"}>
-              <Box className={"order-box-scroll"}>
-                {order?.orderItems?.map((item: OrderItem) => {
-                  const product: Product = order.productData.filter(
-                    (ele: Product) => item.productId === ele._id
-                  )[0];
-                  const imagePath = `${serverApi}/${product.productImages[0]}`;
-                  return (
-                    <Box key={item._id} className={"orders-name-price"}>
-                      <img src={imagePath} className={"order-dish-img"}  alt ="noimage"/>
-                      <p className={"title-dish"}>{product.productName}</p>
-                      <Box className={"price-box"}>
-                        <p>${item.itemPrice}</p>
-                        <img src={"/icons/close.svg"} alt ="noimage" />
-                        <p>{item.itemQuantity}</p>
-                        <img src={"/icons/pause.svg"}  alt ="noimage"/>
-                        <p style={{ marginLeft: "15px" }}>
-                          ${item.itemQuantity * item.itemPrice}
-                        </p>
-                      </Box>
-                    </Box>
-                  );
-                })}
-              </Box>
-
-              <Box className={"total-price-box"}>
-                <Box className={"box-total"}>
-                  <p>Product price</p>
-                  <p>${order.orderTotal - order.orderDelivery}</p>
-                  <img src={"/icons/plus.svg"} alt ="noimage" style={{ marginLeft: "20px" }} />
-                  <p>delivery cost</p>
-                  <p>${order.orderDelivery}</p>
-                  <img
-                    src={"/icons/pause.svg"}
-                    alt ="noimage"
-                    style={{ marginLeft: "20px" }}
-                  />
-                  <p>Total</p>
-                  <p>${order.orderTotal}</p>
+            <Card key={order._id} className="modern-order-card">
+              <CardContent className="order-card-content">
+                {/* Order Header */}
+                <Box className="order-header">
+                  <Box className="order-info">
+                    <Typography variant="h6" className="order-title">
+                      <ShoppingCartIcon className="order-icon" />
+                      Order #{order._id.slice(-6).toUpperCase()}
+                    </Typography>
+                    <Chip 
+                      icon={<HourglassEmptyIcon />}
+                      label="Processing" 
+                      className="status-chip processing-chip"
+                      size="small"
+                    />
+                  </Box>
+                  <Box className="order-date-section">
+                    <Typography variant="body2" className="order-date">
+                      <AccessTimeIcon style={{ fontSize: '1rem', marginRight: '4px' }} />
+                      Processing since {moment(order.createdAt).format("MMM DD, YYYY")}
+                    </Typography>
+                  </Box>
                 </Box>
-                <p className={"data-compl"}>
-                  {moment().format("YY-MM-DD HH:mm")}
-                </p>
-                <Button
-                  value={order._id}
-                  variant="contained"
-                  className={"verify-button"}
-                  onClick={finishOrderHandler}
-                >
-                  Verify to Fulfil
-                </Button>
-              </Box>
-            </Box>
+
+                <Divider className="order-divider" />
+
+                {/* Products List */}
+                <Box className="products-section">
+                  <Typography variant="subtitle1" className="section-title">
+                    Order Items
+                  </Typography>
+                  <Stack spacing={2}>
+                    {order?.orderItems?.map((item: OrderItem) => {
+                      const product: Product = order.productData.filter(
+                        (ele: Product) => item.productId === ele._id
+                      )[0];
+                      
+                      return (
+                        <Card key={item._id} className="product-item-card">
+                          <CardContent className="product-item-content">
+                            <Box className="product-item">
+                              <Avatar
+                                src={getProductImageUrl(product.productImages[0])}
+                                className="product-avatar"
+                                variant="rounded"
+                              />
+                              <Box className="product-details">
+                                <Typography variant="h6" className="product-name">
+                                  {product.productName}
+                                </Typography>
+                                <Typography variant="body2" className="product-category">
+                                  {product.productCategory}
+                                </Typography>
+                              </Box>
+                              <Box className="product-quantity">
+                                <Typography variant="body2" className="quantity-label">
+                                  Qty:
+                                </Typography>
+                                <Chip 
+                                  label={item.itemQuantity}
+                                  size="small"
+                                  className="quantity-chip"
+                                />
+                              </Box>
+                              <Box className="product-pricing">
+                                <Typography variant="body2" className="unit-price">
+                                  ${item.itemPrice} each
+                                </Typography>
+                                <Typography variant="h6" className="total-price">
+                                  ${(item.itemQuantity * item.itemPrice).toFixed(2)}
+                                </Typography>
+                              </Box>
+                            </Box>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </Stack>
+                </Box>
+
+                <Divider className="order-divider" />
+
+                {/* Order Summary */}
+                <Box className="order-summary">
+                  <Typography variant="subtitle1" className="section-title">
+                    Order Summary
+                  </Typography>
+                  <Grid container spacing={2} className="summary-grid">
+                    <Grid item xs={6}>
+                      <Box className="summary-item">
+                        <AttachMoneyIcon className="summary-icon" />
+                        <Box>
+                          <Typography variant="body2" className="summary-label">
+                            Subtotal
+                          </Typography>
+                          <Typography variant="h6" className="summary-value">
+                            ${(order.orderTotal - order.orderDelivery).toFixed(2)}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box className="summary-item">
+                        <LocalShippingIcon className="summary-icon" />
+                        <Box>
+                          <Typography variant="body2" className="summary-label">
+                            Delivery
+                          </Typography>
+                          <Typography variant="h6" className="summary-value">
+                            ${order.orderDelivery.toFixed(2)}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                  <Box className="total-section">
+                    <Typography variant="h5" className="total-amount">
+                      Total: ${order.orderTotal.toFixed(2)}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                {/* Action Buttons */}
+                <Box className="order-actions">
+                  <Box className="processing-info">
+                    <Typography variant="body2" className="processing-note">
+                      <HourglassEmptyIcon style={{ fontSize: '1rem', marginRight: '6px' }} />
+                      Order is being prepared for delivery
+                    </Typography>
+                  </Box>
+                  <Button
+                    value={order._id}
+                    variant="contained"
+                    startIcon={<CheckCircleIcon />}
+                    className="verify-btn"
+                    onClick={finishOrderHandler}
+                  >
+                    Mark as Received
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
           );
         })}
 
-        {!processOrders ||
-          (processOrders.length === 0 && (
-            <Box
-              display={"flex"}
-              flexDirection={"row"}
-              justifyContent={"center"}
-            >
-              <img
-                src={"/icons/noimage-list.svg"}
-                alt ="noimage"
-                style={{ width: 300, height: 300 }}
-              />
-            </Box>
-          ))}
+        {!processOrders || processOrders.length === 0 && (
+          <Box className="empty-state">
+            <img
+              src="/icons/noimage-list.svg"
+              alt="No processing orders"
+              className="empty-state-image"
+            />
+            <Typography variant="h6" className="empty-state-title">
+              No Processing Orders
+            </Typography>
+            <Typography variant="body2" className="empty-state-subtitle">
+              You don't have any orders being processed at the moment
+            </Typography>
+          </Box>
+        )}
       </Stack>
     </TabPanel>
   );

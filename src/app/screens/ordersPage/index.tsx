@@ -2,11 +2,28 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, SyntheticEvent, useEffect } from "react";
-import { Container, Stack, Box } from "@mui/material";
+import { 
+  Container, 
+  Stack, 
+  Box, 
+  Card,
+  CardContent,
+  Typography,
+  Paper,
+  Avatar,
+  Chip,
+  Button
+} from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import PauseCircleIcon from "@mui/icons-material/PauseCircle";
+import ProcessingIcon from "@mui/icons-material/HourglassEmpty";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import PersonIcon from "@mui/icons-material/Person";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -67,125 +84,187 @@ export default function OrdersPage() {
   }, [orderInquiry, orderBuilder]);
 
   /** HANDLERS **/
-
   const handleChange = (e: SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
+  // Helper function for user image
+  const getUserImageUrl = (imageData: string | undefined): string => {
+    if (!imageData) return "/icons/default-user.svg";
+    if (imageData.startsWith('data:')) return imageData;
+    return `${serverApi}/${imageData}`;
+  };
+
   if (!authMember) navigate("/");
+  
   return (
-    <div className={"order-page"}>
-      <Container className="order-container">
-        <Stack className={"order-left"}>
-          <TabContext value={value}>
-            <Box className={"order-nav-frame"}>
-              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+    <div className="order-page">
+      {/* Hero Section */}
+      <Box className="order-hero">
+        <Container maxWidth="lg">
+          <Box className="hero-content">
+            <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '12px' }}>
+              <ShoppingBagIcon 
+                style={{ color: '#667eea', fontSize: '3rem' }}
+              />
+              <Typography 
+                variant="h2" 
+                className="hero-title"
+                style={{ color: '#1e293b', margin: 0 }}
+              >
+                My Orders
+              </Typography>
+            </Box>
+            <Typography 
+              variant="h6" 
+              className="hero-subtitle"
+              style={{ color: '#64748b' }}
+            >
+              Track and manage all your furniture orders
+            </Typography>
+          </Box>
+        </Container>
+      </Box>
+
+      <Container maxWidth="lg" className="order-container">
+        <Box className="order-content">
+          {/* Main Orders Section */}
+          <Box className="order-main">
+            <TabContext value={value}>
+              {/* Tab Navigation */}
+              <Paper className="order-tab-navigation" elevation={0}>
                 <Tabs
                   value={value}
                   onChange={handleChange}
-                  aria-label="basic tabs example"
-                  className={"table_list"}
+                  centered
+                  className="order-tabs"
                 >
-                  <Tab label="PAUSED ORDERS" value={"1"} />
-                  <Tab label="PROCESS ORDERS" value={"2"} />
-                  <Tab label="FINISHED ORDERS" value={"3"} />
-                </Tabs>
-              </Box>
-            </Box>
-            <Stack className={"order-main-content"}>
-              <PausedOrders setValue={setValue} />
-              <ProcessOrders setValue={setValue} />
-              <FinishedOrders />
-            </Stack>
-          </TabContext>
-        </Stack>
-
-        <Stack className={"order-right"}>
-          <Box className={"order-info-box"}>
-            <Box className={"member-box"}>
-              <div className={"order-user-img"}>
-                <img
-                  src={
-                    authMember?.memberImage
-                      ? `${serverApi}/${authMember.memberImage}`
-                      : "/icons/default-user.svg"
-                  }
-                  className={"order-user-avatar"}
-                />
-                <div className={"order-user-icon-box"}>
-                  <img
-                    src={
-                      authMember?.memberType === MemberType.USER
-                        ? "/icons/restaurant.svg"
-                        : "/icons/user-badge.svg"
-                       
-                    }
-                    className={"order-user-prof-img"}
+                  <Tab 
+                    icon={<PauseCircleIcon />} 
+                    label="Paused Orders" 
+                    value="1" 
+                    className="order-tab-item"
                   />
-                </div>
-              </div>
-              <span className={"order-user-name"}>
-                {" "}
-                {authMember?.memberNick}
-              </span>
-              <span className={"order-user-prof"}>
-                {" "}
-                {authMember?.memberType}
-              </span>
-            </Box>
-            <Box className={"liner"}></Box>
-            <Box className={"order-user-address"}>
-              <div style={{ display: "flex" }}>
-                <LocationOnIcon />
-              </div>
-              <div className={"spec-address-txt"}>
-                {authMember?.memberAddress
-                  ? authMember.memberAddress
-                  : "Do not exist"}
-              </div>
-            </Box>
+                  <Tab 
+                    icon={<ProcessingIcon />} 
+                    label="Processing" 
+                    value="2" 
+                    className="order-tab-item"
+                  />
+                  <Tab 
+                    icon={<CheckCircleIcon />} 
+                    label="Completed" 
+                    value="3" 
+                    className="order-tab-item"
+                  />
+                </Tabs>
+              </Paper>
+
+              {/* Tab Content */}
+              <Box className="order-tab-content">
+                <PausedOrders setValue={setValue} />
+                <ProcessOrders setValue={setValue} />
+                <FinishedOrders />
+              </Box>
+            </TabContext>
           </Box>
-          <Box className={"order-info-box"} sx={{ mt: "15px" }}>
-            <input
-              type={"text"}
-              name={"cardNumber"}
-              placeholder={"Card number : **** 4090 2002 7495"}
-              className={"card-input"}
-            />
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <input
-                type={"text"}
-                name={"cardPeriod"}
-                placeholder={"07 / 24"}
-                className={"card-half-input"}
-              />
-              <input
-                type={"text"}
-                name={"cardCVV"}
-                placeholder={"CVV : 010"}
-                className={"card-half-input"}
-              />
-            </div>
-            <input
-              type={"text"}
-              name={"cardCreator"}
-              placeholder={"Justin Robertson"}
-              className={"card-input"}
-            />
-            <div className={"cards-box"}>
-              <img src={"/icons/western-card.svg"} alt = "noimage"/>
-              <img src={"/icons/master-card.svg"} alt = "noimage"/>
-              <img src={"/icons/paypal-card.svg"} alt = "noimage"/>
-              <img src={"/icons/visa-card.svg"} alt = "noimage"/>
-            </div>
+
+          {/* Sidebar */}
+          <Box className="order-sidebar">
+            {/* User Profile Card */}
+            <Card className="profile-card">
+              <CardContent>
+                <Box className="profile-header">
+                  <PersonIcon className="profile-icon" />
+                  <Typography variant="h6" className="profile-title">
+                    Customer Profile
+                  </Typography>
+                </Box>
+                
+                <Box className="profile-content">
+                  <Box className="profile-avatar-section">
+                    <Avatar
+                      src={getUserImageUrl(authMember?.memberImage)}
+                      className="profile-avatar"
+                    />
+                    <Chip
+                      icon={authMember?.memberType === MemberType.USER ? 
+                        <PersonIcon /> : <PersonIcon />}
+                      label={authMember?.memberType === MemberType.USER ? 
+                        "Customer" : "Business"}
+                      className="profile-chip"
+                      size="small"
+                    />
+                  </Box>
+                  
+                  <Typography variant="h6" className="profile-name">
+                    {authMember?.memberNick}
+                  </Typography>
+                  
+                  <Box className="profile-address">
+                    <LocationOnIcon 
+                      className="address-icon" 
+                      style={{ color: 'white' }}
+                    />
+                    <Typography variant="body2" className="address-text">
+                      {authMember?.memberAddress || "No address provided"}
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+
+            {/* Payment Card */}
+            <Card className="payment-card">
+              <CardContent>
+                <Box className="payment-header">
+                  <CreditCardIcon className="payment-icon" />
+                  <Typography variant="h6" className="payment-title">
+                    Payment Method
+                  </Typography>
+                </Box>
+                
+                <Box className="payment-form">
+                  <input
+                    type="text"
+                    name="cardNumber"
+                    placeholder="Card Number"
+                    className="payment-input"
+                  />
+                  
+                  <Box className="payment-row">
+                    <input
+                      type="text"
+                      name="cardExpiry"
+                      placeholder="MM/YY"
+                      className="payment-input-half"
+                    />
+                    <input
+                      type="text"
+                      name="cardCVV"
+                      placeholder="CVV"
+                      className="payment-input-half"
+                    />
+                  </Box>
+                  
+                  <input
+                    type="text"
+                    name="cardHolder"
+                    placeholder="Cardholder Name"
+                    className="payment-input"
+                  />
+                  
+                  <Box className="payment-methods">
+                    <img src="/icons/visa-card.svg" alt="Visa" className="payment-method-icon" />
+                    <img src="/icons/master-card.svg" alt="Mastercard" className="payment-method-icon" />
+                    <img src="/icons/paypal-card.svg" alt="PayPal" className="payment-method-icon" />
+                    <img src="/icons/western-card.svg" alt="Western Union" className="payment-method-icon" />
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
           </Box>
-        </Stack>
+        </Box>
       </Container>
     </div>
   );
