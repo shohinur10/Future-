@@ -1,4 +1,4 @@
-import { Box, Button, Container, ListItemIcon, Menu, MenuItem, Stack } from "@mui/material";
+import { Box, Button, Container, ListItemIcon, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
 import { CartItem } from "../../lib/types/search";
@@ -40,17 +40,26 @@ interface OtherNavbarProps {
       <div className="other-navbar">
         <Container className="navbar-container">
           <Stack className="menu">
+            {/* Brand Text instead of Logo */}
             <Box>
-              <NavLink to="/">
-                <img 
-                  className="brand-logo" 
-                  src="icons/furniture-logo-design-vector-26988909.jpg" 
-                  alt="Future Furniture"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "icons/favicon.svg";
-                  }}
-                />
+              <NavLink to="/" style={{ textDecoration: 'none' }}>
+                <Typography variant="h5" sx={{
+                  color: 'white',
+                  fontWeight: 700,
+                  fontSize: '1.5rem',
+                  textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                  letterSpacing: '-0.02em',
+                  background: 'linear-gradient(45deg, #ffffff 0%, rgba(255,255,255,0.8) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'scale(1.05)',
+                    textShadow: '0 4px 8px rgba(0,0,0,0.4)'
+                  }
+                }}>
+                  Future Furniture
+                </Typography>
               </NavLink>
             </Box>
             <Stack className="links">

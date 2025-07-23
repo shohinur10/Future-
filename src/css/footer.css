@@ -5,28 +5,30 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 34px;
-    color: #e3c08d;
-  }
-  
-  .sns-context {
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.sns-context {
     margin-top: 17px;
     width: 137px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-  }
-  
-  .foot-category-title {
+}
+
+.foot-category-title {
     width: 106px;
     font-family: "Poppins";
     font-style: normal;
     font-weight: 600;
     font-size: 24px;
     line-height: 34px;
-    color: #c5c8c9;
-  }
-  
-  .foot-category-link {
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.foot-category-link {
     margin-top: 20px;
     height: 170px;
     display: flex;
@@ -38,68 +40,92 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 34px;
-  }
-  
-  .foot-category-link a {
-    color: #e3c08d;
+}
+
+.foot-category-link a {
+    color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     cursor: pointer;
-  }
-  
-  .find-us {
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.foot-category-link a:hover {
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translateX(5px);
+}
+
+.find-us {
     display: flex;
     flex-direction: row;
-  }
-  
-  .find-us span {
+}
+
+.find-us span {
     font-family: "Poppins";
     font-style: normal;
     font-weight: 700;
     font-size: 18px;
     line-height: 34px;
-    color: #c5c8c9;
-  }
-  
-  .find-us div {
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.find-us div {
     margin-left: 10px;
     font-family: "Poppins";
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     line-height: 34px;
-    color: #e3c08d;
-  }
-  
-  .copyright-txt {
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.copyright-txt {
     margin-top: 17px;
     font-family: "Poppins";
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     line-height: 34px;
-    color: #e3c08d;
-  }
-  
-  .foot-category-title:after {
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.foot-category-title:after {
     display: block;
     content: "";
-    border-bottom: solid 2px #d7b686;
+    border-bottom: solid 2px rgba(255, 255, 255, 0.8);
     transform: scaleX(0);
     transition: transform 250ms ease-in-out;
     transform-origin: 0% 50%;
-  }
-  
-  .foot-category-title:hover:after {
+}
+
+.foot-category-title:hover:after {
     transform: scaleX(1);
-  }
-  
-/* Add hover effects for social icons */
+}
+
+/* Enhanced social icons styling for gradient background */
+.foot-social-icons img {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    padding: 8px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
 .foot-social-icons img:hover {
-  transform: scale(1.1);
-  opacity: 0.8;
+    transform: scale(1.15);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
 }
 
 .foot-social-icons {
-  gap: 15px !important;
+    gap: 15px !important;
+    margin-top: 25px;
 }
   

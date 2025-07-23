@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Stack, MenuItem, Container, Button, Menu, ListItemIcon } from "@mui/material";
+import { Box, Stack, MenuItem, Container, Button, Menu, ListItemIcon, Typography } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
 import Basket from "./Basket";
 import { useGlobals } from "../hooks/useGlobals";
@@ -29,7 +29,6 @@ const HomeNavbar = (props: any) => {
 		try {
 			const member = new MemberService();
 			await member.logout();
-			// Remove the result.data.state check since logout returns void
 			navigate('/');
 		} catch (err) {
 			sweetErrorHandling(err).then();
@@ -41,17 +40,26 @@ const HomeNavbar = (props: any) => {
       <Container className="navbar-container">
 				<div className="menu">
 					<div className="links">
-						<div>
-            <NavLink to="/">
-								<img
-									className="brand-logo"
-									src="/icons/furniture-logo-design-vector-26988909.jpg"
-									alt="Future Furniture"
-									onError={(e) => {
-										const target = e.target as HTMLImageElement;
-										target.src = "/icons/favicon.svg";
-									}}
-								/>
+						{/* Brand Name instead of Logo */}
+						<div className="brand-text">
+            <NavLink to="/" style={{ textDecoration: 'none' }}>
+								<Typography variant="h5" sx={{
+									color: 'white',
+									fontWeight: 700,
+									fontSize: '1.8rem',
+									textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+									letterSpacing: '-0.02em',
+									background: 'linear-gradient(45deg, #ffffff 0%, rgba(255,255,255,0.8) 100%)',
+									WebkitBackgroundClip: 'text',
+									WebkitTextFillColor: 'transparent',
+									transition: 'all 0.3s ease',
+									'&:hover': {
+										transform: 'scale(1.05)',
+										textShadow: '0 4px 8px rgba(0,0,0,0.4)'
+									}
+								}}>
+									Future Furniture
+								</Typography>
             </NavLink>
 						</div>
 						<div className="hover-line">

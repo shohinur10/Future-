@@ -2,12 +2,7 @@
     width:100%;
     height: 100px;
     display: flex;
-    background: linear-gradient(
-        135deg,
-        rgba(44, 62, 80, 0.95) 0%,
-        rgba(52, 73, 94, 0.9) 50%,
-        rgba(44, 62, 80, 0.95) 100%
-    );
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     backdrop-filter: blur(20px);
     position: fixed;
     top: 0;
@@ -20,12 +15,7 @@
 }
 
 .home-navbar.scrolled {
-    background: linear-gradient(
-        135deg,
-        rgba(44, 62, 80, 0.98) 0%,
-        rgba(52, 73, 94, 0.95) 50%,
-        rgba(44, 62, 80, 0.98) 100%
-    );
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
     box-shadow: 0 2px 30px rgba(0,0,0,0.2);
     height: 85px;
 }
@@ -47,22 +37,20 @@
     width: 100%;
 }
 
-.home-navbar .navbar-container .menu .brand-logo{
-    width: 150px;
-    height: 50px;
-    object-fit: contain;
-    border-radius: 10px;
+/* Brand Text Styling instead of Logo */
+.home-navbar .navbar-container .menu .brand-text {
+    padding: 0.5rem 0;
     transition: all 0.3s ease;
-    filter: brightness(1.1) contrast(1.1);
-    padding: 5px;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
 }
 
-.home-navbar .navbar-container .menu .brand-logo:hover {
-    transform: scale(1.05);
-    background: rgba(255,255,255,0.15);
-    box-shadow: 0 5px 15px rgba(255,255,255,0.2);
+.home-navbar .navbar-container .menu .brand-text:hover {
+    transform: scale(1.02);
+}
+
+/* Remove old logo styling and replace with text styling */
+.home-navbar .navbar-container .menu .brand-logo,
+.other-navbar .navbar-container .menu .brand-logo {
+    display: none;
 }
 
 .home-navbar .navbar-container .menu .links{
@@ -290,12 +278,7 @@ button.signup {
     width:100%;
     height: 440px;
     display: flex;
-    background: linear-gradient(
-        135deg,
-        rgba(44, 62, 80, 0.95) 0%,
-        rgba(52, 73, 94, 0.9) 50%,
-        rgba(44, 62, 80, 0.95) 100%
-    );
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     backdrop-filter: blur(20px);
     position: relative;
     border-bottom: 1px solid rgba(255,255,255,0.1);
