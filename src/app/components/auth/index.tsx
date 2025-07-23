@@ -11,13 +11,10 @@ import {
   IconButton,
   InputAdornment,
   Alert,
-  Divider,
-  Tab,
-  Tabs
+  Divider
 } from "@mui/material";
 import styled from "styled-components";
 import CloseIcon from "@mui/icons-material/Close";
-import EmailIcon from "@mui/icons-material/Email";
 import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";
 import LockIcon from "@mui/icons-material/Lock";
@@ -89,11 +86,9 @@ interface AuthenticationModalProps {
 export default function AuthenticationModal(props: AuthenticationModalProps) {
   const { signupOpen, loginOpen, handleSignupClose, handleLoginClose } = props;
   const [memberNick, setMemberNick] = useState<string>("");
-  const [memberEmail, setMemberEmail] = useState<string>("");
   const [memberPhone, setMemberPhone] = useState<string>("");
   const [memberPassword, setMemberPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [loginMethod, setLoginMethod] = useState<'email' | 'username'>('email');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const { setAuthMember } = useGlobals();
@@ -101,11 +96,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
   /** HANDLERS **/
   const handleUsername = (e: T) => {
     setMemberNick(e.target.value);
-    setError("");
-  };
-  
-  const handleEmail = (e: T) => {
-    setMemberEmail(e.target.value);
     setError("");
   };
   
@@ -119,15 +109,14 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
     setError("");
   };
 
-  const handlePasswordKeyDown = (e: T) => {
+  const handlePasswordKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      loginOpen ? handleLoginRequest() : handleSignupRequest();
+      if (signupOpen) {
+        handleSignupRequest();
+      } else {
+        handleLoginRequest();
+      }
     }
-  };
-
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
   };
 
   const validatePhone = (phone: string) => {
@@ -137,7 +126,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
   const resetForm = () => {
     setMemberNick("");
-    setMemberEmail("");
     setMemberPhone("");
     setMemberPassword("");
     setError("");
@@ -153,9 +141,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
       if (!memberNick.trim()) {
         throw new Error("Username is required");
       }
-      if (!memberEmail.trim() || !validateEmail(memberEmail)) {
-        throw new Error("Please enter a valid email address");
-      }
       if (!memberPhone.trim() || !validatePhone(memberPhone)) {
         throw new Error("Please enter a valid phone number");
       }
@@ -165,7 +150,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
       const signupInput: MemberInput = {
         memberNick: memberNick.trim(),
-        memberEmail: memberEmail.trim(),
         memberPhone: memberPhone.trim(),
         memberPassword,
       };
@@ -186,19 +170,13 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
       setLoading(true);
       setError("");
 
-      const loginValue = loginMethod === 'email' ? memberEmail : memberNick;
+      const loginValue = memberNick;
       
       if (!loginValue.trim() || !memberPassword) {
         throw new Error("Please fill in all fields");
       }
 
-      if (loginMethod === 'email' && !validateEmail(memberEmail)) {
-        throw new Error("Please enter a valid email address");
-      }
-
-      const loginInput: LoginInput = loginMethod === 'email' 
-        ? { memberEmail: memberEmail.trim(), memberPassword }
-        : { memberNick: memberNick.trim(), memberPassword };
+      const loginInput: LoginInput = { memberNick: memberNick.trim(), memberPassword };
 
       const member = new MemberService();
       const result = await member.login(loginInput);
@@ -313,22 +291,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 />
 
                 <TextField
-                  label="Email Address"
-                  variant="outlined"
-                  fullWidth
-                  type="email"
-                  value={memberEmail}
-                  onChange={handleEmail}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <EmailIcon color="action" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-
-                <TextField
                   label="Phone Number"
                   variant="outlined"
                   fullWidth
@@ -413,16 +375,6 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 Welcome back to Future Furniture
               </Typography>
 
-              <Tabs
-                value={loginMethod}
-                onChange={(e, newValue) => setLoginMethod(newValue)}
-                sx={{ mb: 3 }}
-                variant="fullWidth"
-              >
-                <Tab label="Email" value="email" />
-                <Tab label="Username" value="username" />
-              </Tabs>
-
               {error && (
                 <Alert severity="error" sx={{ mb: 3 }}>
                   {error}
@@ -430,38 +382,20 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
               )}
 
               <Stack spacing={3}>
-                {loginMethod === 'email' ? (
-                  <TextField
-                    label="Email Address"
-                    variant="outlined"
-                    fullWidth
-                    type="email"
-                    value={memberEmail}
-                    onChange={handleEmail}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <EmailIcon color="action" />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                ) : (
-                  <TextField
-                    label="Username"
-                    variant="outlined"
-                    fullWidth
-                    value={memberNick}
-                    onChange={handleUsername}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <PersonIcon color="action" />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                )}
+                <TextField
+                  label="Username"
+                  variant="outlined"
+                  fullWidth
+                  value={memberNick}
+                  onChange={handleUsername}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <PersonIcon color="action" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
 
                 <TextField
                   label="Password"
