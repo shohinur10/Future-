@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Box, Button, Container, Stack } from "@mui/material";
+import { Box, Button, Container, Stack, CircularProgress, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -8,6 +8,7 @@ import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setProducts } from "./slice";
@@ -38,51 +39,65 @@ export default function Products(props: ProductsProps) {
   const { products } = useSelector(productsRetriever);
   const [productSearch, setProductSearch] = useState<ProductInquiry>({
     page: 1,
-    limit: 8,
+    limit: 12,
     order: "createdAt",
-    productCategory:  ProductCategory.BEDROOM,
+    productCategory: ProductCategory.BEDROOM,
     search: "",
   });
   const [searchText, setSearchText] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  // Fetch products when search criteria change
   useEffect(() => {
-    const product = new ProductService();
-    product
-      .getProducts(productSearch)
-      .then((data) => setProducts(data))
-      .catch((err) => console.log(err));
-  }, [productSearch, setProducts]);
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const product = new ProductService();
+        const data = await product.getProducts(productSearch);
+        setProducts(data);
+      } catch (err) {
+        console.log("Error fetching products:", err);
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  useEffect(() => {
-    if (productSearch.search && productSearch.search.length === 0) {
-      productSearch.search = "";
-      setProductSearch({ ...productSearch });
-    }
-  }, [productSearch, setProductSearch]);
+    fetchProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productSearch]); // Removed setProducts from dependencies to prevent infinite loop
 
   /** HANDLERS **/
-
-  const searchCategoryHandler = (category:  ProductCategory) => {
-    productSearch.page = 1;
-    productSearch.productCategory = category;
-    setProductSearch({ ...productSearch });
+  const searchCategoryHandler = (category: ProductCategory) => {
+    setProductSearch(prev => ({
+      ...prev,
+      page: 1,
+      productCategory: category,
+    }));
   };
 
   const searchOrderHandler = (order: string) => {
-    productSearch.page = 1;
-    productSearch.order = order;
-    setProductSearch({ ...productSearch });
+    setProductSearch(prev => ({
+      ...prev,
+      page: 1,
+      order,
+    }));
   };
 
   const searchProductHandler = () => {
-    productSearch.search = searchText;
-    setProductSearch({ ...productSearch });
+    setProductSearch(prev => ({
+      ...prev,
+      page: 1,
+      search: searchText.trim(),
+    }));
   };
 
   const paginationHandler = (e: ChangeEvent<any>, value: number) => {
-    productSearch.page = value;
-    setProductSearch({ ...productSearch });
+    setProductSearch(prev => ({
+      ...prev,
+      page: value,
+    }));
   };
 
   const chosenProductHandler = (id: string) => {
@@ -91,17 +106,18 @@ export default function Products(props: ProductsProps) {
 
   return (
     <div className={"products"}>
-      <Container>
+      <Container maxWidth="xl">
         <Stack flexDirection={"column"} alignItems={"center"}>
+          {/* Hero Search Section */}
           <Stack className={"avatar-big-box"}>
             <Stack className={"top-text"}>
-              <p>Future</p>
+              <p>Discover Premium Furniture</p>
               <Stack className={"single-search-big-box"}>
                 <input
                   type={"search"}
                   className={"single-search-input"}
                   name={"singleResearch"}
-                  placeholder={"Type here"}
+                  placeholder={"Search furniture..."}
                   value={searchText}
                   onChange={(e) => setSearchText(e.target.value)}
                   onKeyDown={(e) => {
@@ -113,153 +129,95 @@ export default function Products(props: ProductsProps) {
                   variant="contained"
                   endIcon={<SearchIcon />}
                   onClick={searchProductHandler}
+                  disabled={loading}
                 >
-                  Search
+                  {loading ? "Searching..." : "Search"}
                 </Button>
               </Stack>
             </Stack>
           </Stack>
 
-          <Stack className={"dishes-filter-section"}>
-            <Stack className={"dishes-filter-box"}>
-              <Button
-                variant={"contained"}
-                className={"order"}
-                color={
-                  productSearch.order === "createdAt" ? "primary" : "secondary"
-                }
-                onClick={() => searchOrderHandler("createdAt")}
-              >
-                New
-              </Button>
-              <Button
-                variant={"contained"}
-                className={"order"}
-                color={
-                  productSearch.order === "productPrice"
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() => searchOrderHandler("productPrice")}
-              >
-                Price
-              </Button>
-              <Button
-                variant={"contained"}
-                className={"order"}
-                color={
-                  productSearch.order === "productViews"
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() => searchOrderHandler("productViews")}
-              >
-                Views
-              </Button>
-            </Stack>
-          </Stack>
-
+          {/* Category Filter Section */}
           <Stack className={"list-category-section"}>
             <Stack className={"product-category"}>
               <div className={"category-main"}>
+                {Object.values(ProductCategory).map((category) => (
               <Button
+                    key={category}
                   variant={"contained"}
-                  color={
-                    productSearch.productCategory === ProductCategory.OTHER
-                  
-                      ? "primary"
-                      : "secondary"
-                  }
-                  onClick={() =>
-                    searchCategoryHandler(ProductCategory.OTHER)
-                  }
+                    className={productSearch.productCategory === category ? "Mui-selected" : ""}
+                    onClick={() => searchCategoryHandler(category)}
+                    disabled={loading}
                 >
-                  OTHER
+                    {category}
                 </Button>
-                <Button
-                  variant={"contained"}
-                  color={
-                    productSearch.productCategory ===  ProductCategory.KITCHEN
-                      ? "primary"
-                      : "secondary"
-                  }
-                  onClick={() =>
-                    searchCategoryHandler( ProductCategory.KITCHEN)
-                  }
-                >
-                  KITCHEN
-                </Button>
-          
-                <Button
-                  variant={"contained"}
-                  color={
-                    productSearch.productCategory === ProductCategory.BEDROOM
-                      ? "primary"
-                      : "secondary"
-                  }
-                  onClick={() =>
-                    searchCategoryHandler(ProductCategory.BEDROOM)
-                  }
-                >
-                  BEDROOM
-                </Button>
-                <Button
-                  variant={"contained"}
-                  color={
-                    productSearch.productCategory=== ProductCategory.OUTDOOR
-                      ? "primary"
-                      : "secondary"
-                  }
-                  onClick={() =>
-                    searchCategoryHandler(ProductCategory.OUTDOOR)
-                  }
-                >
-               OUTDOOR
-                </Button>
-                <Button
-                  variant={"contained"}
-                  color={
-                    productSearch.productCategory === ProductCategory.OFFICE
-                      ? "primary"
-                      : "secondary"
-                  }
-                  onClick={() =>
-                    searchCategoryHandler( ProductCategory.OFFICE)
-                  }
-                >
-                  OFFICE
-                </Button>
-                <Button
-                  variant={"contained"}
-                  color={
-                    productSearch.productCategory === ProductCategory.KIDS
-                      ? "primary"
-                      : "secondary"
-                  }
-                  onClick={() =>
-                    searchCategoryHandler( ProductCategory.KIDS)
-                  }
-                >
-                  KIDS
-                </Button>
+                ))}
               </div>
             </Stack>
 
+            {/* Sort Filter Section */}
+            <Stack className={"dishes-filter-section"}>
+              <Stack className={"dishes-filter-box"}>
+                <Button
+                  variant={"contained"}
+                  className={`order ${productSearch.order === "createdAt" ? "Mui-selected" : ""}`}
+                  onClick={() => searchOrderHandler("createdAt")}
+                  disabled={loading}
+                >
+                  New
+                </Button>
+                <Button
+                  variant={"contained"}
+                  className={`order ${productSearch.order === "productPrice" ? "Mui-selected" : ""}`}
+                  onClick={() => searchOrderHandler("productPrice")}
+                  disabled={loading}
+                >
+                  Price
+                </Button>
+                <Button
+                  variant={"contained"}
+                  className={`order ${productSearch.order === "productViews" ? "Mui-selected" : ""}`}
+                  onClick={() => searchOrderHandler("productViews")}
+                  disabled={loading}
+                >
+                  Views
+                </Button>
+              </Stack>
+            </Stack>
+
+            {/* Loading State */}
+            {loading && (
+              <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+                <CircularProgress size={40} sx={{ color: '#4c51bf' }} />
+              </Box>
+            )}
+
+            {/* Products Grid */}
             <Stack className={"product-wrapper"}>
-              {products.length !== 0 ? (
+              {!loading && products.length !== 0 ? (
                 products.map((product: Product) => {
                   const imagePath = `${serverApi}/${product.productImages[0]}`;
+                  
                   return (
                     <Stack
                       key={product._id}
                       className={"product-card"}
                       onClick={() => chosenProductHandler(product._id)}
                     >
-                      <Stack
-                        className={"product-img"}
-                        sx={{ backgroundImage: `url(${imagePath})` }}
-                      >
-                        <div className={"product-sale"}>{product.productMaterialType}</div>
+                      <Box className={"product-img"}>
+                        <img
+                          src={imagePath}
+                          alt={product.productName}
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = "/img/default-furniture.svg";
+                          }}
+                        />
+                        
+                        <div className={"product-sale"}>
+                          {product.productMaterialType}
+                        </div>
+                        
                         <Button
                           className={"shop-btn"}
                           onClick={(e) => {
@@ -273,54 +231,62 @@ export default function Products(props: ProductsProps) {
                             e.stopPropagation();
                           }}
                         >
-                          <img
-                            src={imagePath}
-                            alt={product.productName}
-                                                         onError={(e) => {
-                               const target = e.target as HTMLImageElement;
-                               target.src = "/img/default-furniture.svg";
-                             }}
-                          />
+                          <ShoppingCartIcon sx={{ color: '#4c51bf', fontSize: '1.1rem' }} />
                         </Button>
-                        <Button className={"view-btn"} sx={{ right: "36px" }}>
+                        
+                        <Button className={"view-btn"}>
                           <Badge
                             badgeContent={product.productViews}
                             color="secondary"
+                            sx={{
+                              '& .MuiBadge-badge': {
+                                background: '#4c51bf',
+                                color: 'white',
+                                fontSize: '0.7rem',
+                                fontWeight: 600
+                              }
+                            }}
                           >
                             <RemoveRedEyeIcon
                               sx={{
-                                color:
-                                  product.productViews === 0 ? "gray" : "white",
+                                color: product.productViews === 0 ? "#94a3b8" : "#4c51bf",
+                                fontSize: '1.1rem'
                               }}
                             />
                           </Badge>
                         </Button>
-                      </Stack>
+                      </Box>
+                      
                       <Box className={"product-desc"}>
                         <span className={"product-title"}>
                           {product.productName}
                         </span>
                         <div className={"product-desc"}>
                           <MonetizationOnIcon />
-                          {product.productPrice}
+                          Rp {product.productPrice.toLocaleString()}
                         </div>
                       </Box>
                     </Stack>
                   );
                 })
-              ) : (
-                <Box className="no-data">Products are not available!</Box>
-              )}
+              ) : !loading ? (
+                <Box className="no-data">
+                  <Typography variant="h6" sx={{ mb: 1, color: '#64748b' }}>
+                    No products found
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#94a3b8' }}>
+                    Try adjusting your search criteria or browse different categories
+                  </Typography>
+                </Box>
+              ) : null}
             </Stack>
           </Stack>
 
+          {/* Pagination */}
+          {!loading && products.length > 0 && (
           <Stack className={"pagination-section"}>
             <Pagination
-              count={
-                products.length !== 0
-                  ? productSearch.page + 1
-                  : productSearch.page
-              }
+                count={Math.max(productSearch.page + (products.length === productSearch.limit ? 1 : 0), productSearch.page)}
               page={productSearch.page}
               renderItem={(item) => (
                 <PaginationItem
@@ -329,68 +295,26 @@ export default function Products(props: ProductsProps) {
                     next: ArrowForwardIcon,
                   }}
                   {...item}
-                  color={"secondary"}
                 />
               )}
               onChange={paginationHandler}
+                disabled={loading}
             />
           </Stack>
+          )}
         </Stack>
       </Container>
 
-      {/* <div className={"brands-logo"}>
-        <Container className={"family-brands"}>
-          <Box className={"category-title"}>Our Family Brands</Box>
-          <Stack className={"brand-list"}>
-            <Box className={"review-box"}>
-              <img 
-                src={"/img/Cowboy.webp"}
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = "/icons/default-user.svg";
-                }}
-              />
-            </Box>
-            <Box className={"review-box"}>
-              <img 
-                src={"/img/scarlet.webp"}
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = "/icons/default-user.svg";
-                }}
-              />
-            </Box>
-            <Box className={"review-box"}>
-              <img 
-                src={"/img/Adele.webp"}
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = "/icons/default-user.svg";
-                }}
-              />
-            </Box>
-            <Box className={"review-box"}>
-              <img 
-                src={"/img/Jameson.webp"}
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = "/icons/default-user.svg";
-                }}
-              />
-            </Box>
-          </Stack>
-        </Container>
-      </div> */}
-
+      {/* Address Section */}
       <div className={"address"}>
         <Container>
           <Stack className={"address-area"}>
-            <Box className={"title"}>Our address</Box>
+            <Box className={"title"}>Visit Our Showroom</Box>
             <iframe
               style={{ marginTop: "60px" }}
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2996.363734762081!2d69.2267250514616!3d41.322703307863044!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae8b9a0a33281d%3A0x9c5015eab678e435!2z0KDQsNC50YXQvtC9!5e0!3m2!1sko!2skr!4v1655461169573!5m2!1sko!2skr"
-              width="1320"
-              height="500"
+              width="100%"
+              height="400"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
           </Stack>

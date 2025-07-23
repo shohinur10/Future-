@@ -92,7 +92,7 @@
   .foot-category-title:hover:after {
     transform: scaleX(1);
   }
-
+  
 /* Add hover effects for social icons */
 .foot-social-icons img:hover {
   transform: scale(1.1);

@@ -325,7 +325,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 >
                   {loading ? "Creating Account..." : "Sign Up"}
                 </Button>
-              </Stack>
+            </Stack>
             </FormSection>
           </ModalContainer>
         </Fade>
@@ -444,7 +444,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 >
                   {loading ? "Signing In..." : "Sign In"}
                 </Button>
-              </Stack>
+            </Stack>
             </FormSection>
           </ModalContainer>
         </Fade>

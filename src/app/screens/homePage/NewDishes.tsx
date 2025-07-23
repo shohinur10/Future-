@@ -145,7 +145,7 @@ export default function NewDishes() {
                   🔄 New Arrivals Loading Soon...
                 </Typography>
               </Box>
-            )}
+              )}
           </Stack>
         </Stack>
       </Container>

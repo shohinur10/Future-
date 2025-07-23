@@ -12,11 +12,11 @@ import { Logout } from "@mui/icons-material";
 const HomeNavbar = (props: any) => {
 	const navigate = useNavigate();
 	const { cartItems, onAdd, onRemove, onDelete, onDeleteAll, setLoginOpen, setSignupOpen } = props;
-	const { authMember } = useGlobals();
+  const { authMember } = useGlobals();
 	const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 	const open = Boolean(anchorEl);
 
-	/** HANDLERS **/
+  /** HANDLERS **/
 	const handleLogoutClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -36,13 +36,13 @@ const HomeNavbar = (props: any) => {
 		}
 	};
 
-	return (
+  return (
 		<Stack className="home-navbar">
-			<Container className="navbar-container">
+      <Container className="navbar-container">
 				<div className="menu">
 					<div className="links">
 						<div>
-							<NavLink to="/">
+            <NavLink to="/">
 								<img
 									className="brand-logo"
 									src="/icons/furniture-logo-design-vector-26988909.jpg"
@@ -52,23 +52,23 @@ const HomeNavbar = (props: any) => {
 										target.src = "/icons/favicon.svg";
 									}}
 								/>
-							</NavLink>
+            </NavLink>
 						</div>
 						<div className="hover-line">
 							<NavLink 
 								to="/" 
 								className={({ isActive }) => isActive ? "underline" : ""}
 							>
-								Home
-							</NavLink>
+                Home
+              </NavLink>
 						</div>
 						<div className="hover-line">
 							<NavLink 
 								to="/products" 
 								className={({ isActive }) => isActive ? "underline" : ""}
 							>
-								Products
-							</NavLink>
+                Products
+              </NavLink>
 						</div>
 						{authMember && (
 							<div className="hover-line">
@@ -76,8 +76,8 @@ const HomeNavbar = (props: any) => {
 									to="/orders" 
 									className={({ isActive }) => isActive ? "underline" : ""}
 								>
-									Orders
-								</NavLink>
+                  Orders
+                </NavLink>
 							</div>
 						)}
 						{authMember && (
@@ -86,8 +86,8 @@ const HomeNavbar = (props: any) => {
 									to="/member-page" 
 									className={({ isActive }) => isActive ? "underline" : ""}
 								>
-									My Page
-								</NavLink>
+                  My Page
+                </NavLink>
 							</div>
 						)}
 						<div className="hover-line">
@@ -95,8 +95,8 @@ const HomeNavbar = (props: any) => {
 								to="/help" 
 								className={({ isActive }) => isActive ? "underline" : ""}
 							>
-								Help
-							</NavLink>
+                Help
+              </NavLink>
 						</div>
 					</div>
 
@@ -121,78 +121,78 @@ const HomeNavbar = (props: any) => {
 							</div>
 						) : (
 							<div className="user-section">
-								<Basket
-									cartItems={cartItems}
-									onAdd={onAdd}
-									onRemove={onRemove}
-									onDelete={onDelete}
-									onDeleteAll={onDeleteAll}
-								/>
-								
+            <Basket
+              cartItems={cartItems}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              onDelete={onDelete}
+              onDeleteAll={onDeleteAll}
+            />
+
 								<Button onClick={handleLogoutClick}>
-									<img
-										className="user-avatar"
-										src={
-											authMember?.memberImage
+              <img
+                className="user-avatar"
+                src={
+                  authMember?.memberImage
 												? `${serverApi}/${authMember.memberImage}`
-												: "/icons/default-user.svg"
-										}
+                    : "/icons/default-user.svg"
+                }
 										alt="User avatar"
 										onError={(e) => {
 											const target = e.target as HTMLImageElement;
 											target.src = "/icons/default-user.svg";
 										}}
-									/>
+              />
 								</Button>
 
-								<Menu
+            <Menu
 									open={open}
-									anchorEl={anchorEl}
-									onClose={handleCloseLogout}
-									onClick={handleCloseLogout}
-									PaperProps={{
-										elevation: 0,
-										sx: {
-											overflow: "visible",
-											filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-											mt: 1.5,
-											"& .MuiAvatar-root": {
-												width: 32,
-												height: 32,
-												ml: -0.5,
-												mr: 1,
-											},
-											"&:before": {
-												content: '""',
-												display: "block",
-												position: "absolute",
-												top: 0,
-												right: 14,
-												width: 10,
-												height: 10,
-												bgcolor: "background.paper",
-												transform: "translateY(-50%) rotate(45deg)",
-												zIndex: 0,
-											},
-										},
-									}}
-									transformOrigin={{ horizontal: "right", vertical: "top" }}
-									anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-								>
-									<MenuItem onClick={handleLogoutRequest}>
-										<ListItemIcon>
+              anchorEl={anchorEl}
+              onClose={handleCloseLogout}
+              onClick={handleCloseLogout}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: "visible",
+                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                  mt: 1.5,
+                  "& .MuiAvatar-root": {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  "&:before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: "background.paper",
+                    transform: "translateY(-50%) rotate(45deg)",
+                    zIndex: 0,
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            >
+              <MenuItem onClick={handleLogoutRequest}>
+                <ListItemIcon>
 											<Logout fontSize="small" />
-										</ListItemIcon>
-										Logout
-									</MenuItem>
-								</Menu>
+                </ListItemIcon>
+                Logout
+              </MenuItem>
+            </Menu>
 							</div>
 						)}
 					</div>
 				</div>
 			</Container>
-		</Stack>
-	);
+        </Stack>
+  );
 };
 
 export default HomeNavbar;

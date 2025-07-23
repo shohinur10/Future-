@@ -1,12 +1,14 @@
 import axios from "axios";
 import { serverApi } from "../lib/config";
 import {LoginInput, Member, MemberInput, MemberUpdateInput} from "../lib/types/member";
+import { mockFounder, mockTopUsers } from "../lib/data/mockMembers";
 
 class MemberService {
 	static logoutMember() {
 		throw new Error("Method not implemented.");
 	}
   private readonly path: string;
+  private useMockData: boolean = false;
 
   constructor() {
     this.path = serverApi;
@@ -14,29 +16,41 @@ class MemberService {
 
   public async getTopUsers(): Promise<Member[]> {
     try {
+      // Try API first
+      if (!this.useMockData) {
       const url = this.path + "/member/top-users";
       const result = await axios.get(url);
       console.log("getTopUsers:", result);
-
       return result.data;
+      }
     } catch (err) {
-      console.log("Error, getTopUsers:", err);
-      throw err;
+      console.log("API not available, using mock data for top users:", err);
+      this.useMockData = true;
     }
+
+    // Use mock data
+    console.log("Using mock data for top users");
+    return mockTopUsers;
   }
 
   public async getFounder(): Promise<Member> {
     try {
+      // Try API first
+      if (!this.useMockData) {
       const url = this.path + "/member/founder";
       const result = await axios.get(url);
       console.log("getFounder:", result);
-
       const founder: Member = result.data;
       return founder;
+      }
     } catch (err) {
-      console.log("Error, getFounder:", err);
-      throw err;
+      console.log("API not available, using mock data for founder:", err);
+      this.useMockData = true;
     }
+
+    // Use mock data
+    console.log("Using mock data for founder");
+    return mockFounder;
   }
   public async signup(input: MemberInput): Promise<Member> {
     try {

@@ -54,6 +54,6 @@ button:focus-visible {
 }
 
 /* Force light mode styling */
-a:hover {
-  color: #747bff;
+  a:hover {
+    color: #747bff;
 }
