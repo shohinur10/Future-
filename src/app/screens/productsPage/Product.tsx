@@ -33,6 +33,153 @@ interface ProductsProps {
   onAdd: (item: CartItem) => void;
 }
 
+// ProductCard Component
+interface ProductCardProps {
+  product: Product;
+  onAdd: (item: CartItem) => void;
+  onProductClick: (id: string) => void;
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({ product, onAdd, onProductClick }) => {
+  const [quantity, setQuantity] = useState(1);
+  const [isAdding, setIsAdding] = useState(false);
+  
+  const imagePath = `${serverApi}/${product.productImages[0]}`;
+  
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsAdding(true);
+    
+    onAdd({
+      _id: product._id,
+      quantity: quantity,
+      name: product.productName,
+      price: product.productPrice,
+      image: product.productImages[0],
+    });
+    
+    // Visual feedback
+    setTimeout(() => {
+      setIsAdding(false);
+      setQuantity(1); // Reset quantity after adding
+    }, 500);
+  };
+
+  const handleQuantityChange = (change: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newQuantity = Math.max(1, Math.min(10, quantity + change));
+    setQuantity(newQuantity);
+  };
+
+  const handleQuickAdd = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onAdd({
+      _id: product._id,
+      quantity: 1,
+      name: product.productName,
+      price: product.productPrice,
+      image: product.productImages[0],
+    });
+  };
+
+  return (
+    <Stack
+      key={product._id}
+      className={"product-card"}
+      onClick={() => onProductClick(product._id)}
+    >
+      <Box className={"product-img"}>
+        <img
+          src={imagePath}
+          alt={product.productName}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = "/img/default-furniture.svg";
+          }}
+        />
+        
+        <div className={"product-sale"}>
+          {product.productMaterialType}
+        </div>
+        
+        {/* Quick Cart Button (Small overlay) */}
+        <Button
+          className={"shop-btn-quick"}
+          onClick={handleQuickAdd}
+          title="Quick add to cart"
+        >
+          <ShoppingCartIcon sx={{ color: '#4c51bf', fontSize: '1.1rem' }} />
+        </Button>
+        
+        <Button className={"view-btn"} title="View product details">
+          <Badge
+            badgeContent={product.productViews}
+            color="secondary"
+            sx={{
+              '& .MuiBadge-badge': {
+                background: '#4c51bf',
+                color: 'white',
+                fontSize: '0.7rem',
+                fontWeight: 600
+              }
+            }}
+          >
+            <RemoveRedEyeIcon
+              sx={{
+                color: product.productViews === 0 ? "#94a3b8" : "#4c51bf",
+                fontSize: '1.1rem'
+              }}
+            />
+          </Badge>
+        </Button>
+      </Box>
+      
+      <Box className={"product-desc"}>
+        <span className={"product-title"}>
+          {product.productName}
+        </span>
+        <div className={"product-price"}>
+          <MonetizationOnIcon sx={{ fontSize: '1rem', color: '#4c51bf' }} />
+          <span>${product.productPrice.toLocaleString()}</span>
+        </div>
+        
+        {/* Enhanced Cart Controls */}
+        <Box className={"cart-controls"} onClick={(e) => e.stopPropagation()}>
+          <Box className={"quantity-controls"}>
+            <Button 
+              size="small" 
+              className={"quantity-btn"}
+              onClick={(e) => handleQuantityChange(-1, e)}
+              disabled={quantity <= 1}
+            >
+              -
+            </Button>
+            <span className={"quantity-display"}>{quantity}</span>
+            <Button 
+              size="small" 
+              className={"quantity-btn"}
+              onClick={(e) => handleQuantityChange(1, e)}
+              disabled={quantity >= 10}
+            >
+              +
+            </Button>
+          </Box>
+          
+          <Button
+            variant="contained"
+            className={"add-to-cart-btn"}
+            onClick={handleAddToCart}
+            disabled={isAdding}
+            startIcon={isAdding ? <CircularProgress size={16} color="inherit" /> : <ShoppingCartIcon />}
+          >
+            {isAdding ? 'Adding...' : 'Add to Cart'}
+          </Button>
+        </Box>
+      </Box>
+    </Stack>
+  );
+};
+
 export default function Products(props: ProductsProps) {
   const { onAdd } = props;
   const { setProducts } = actionDispatch(useDispatch());
@@ -53,7 +200,7 @@ export default function Products(props: ProductsProps) {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const product = new ProductService();
+    const product = new ProductService();
         const data = await product.getProducts(productSearch);
         setProducts(data);
       } catch (err) {
@@ -195,80 +342,14 @@ export default function Products(props: ProductsProps) {
             {/* Products Grid */}
             <Stack className={"product-wrapper"}>
               {!loading && products.length !== 0 ? (
-                products.map((product: Product) => {
-                  const imagePath = `${serverApi}/${product.productImages[0]}`;
-                  
-                  return (
-                    <Stack
+                products.map((product: Product) => (
+                  <ProductCard
                       key={product._id}
-                      className={"product-card"}
-                      onClick={() => chosenProductHandler(product._id)}
-                    >
-                      <Box className={"product-img"}>
-                        <img
-                          src={imagePath}
-                          alt={product.productName}
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.src = "/img/default-furniture.svg";
-                          }}
-                        />
-                        
-                        <div className={"product-sale"}>
-                          {product.productMaterialType}
-                        </div>
-                        
-                        <Button
-                          className={"shop-btn"}
-                          onClick={(e) => {
-                            onAdd({
-                              _id: product._id,
-                              quantity: 1,
-                              name: product.productName,
-                              price: product.productPrice,
-                              image: product.productImages[0],
-                            });
-                            e.stopPropagation();
-                          }}
-                        >
-                          <ShoppingCartIcon sx={{ color: '#4c51bf', fontSize: '1.1rem' }} />
-                        </Button>
-                        
-                        <Button className={"view-btn"}>
-                          <Badge
-                            badgeContent={product.productViews}
-                            color="secondary"
-                            sx={{
-                              '& .MuiBadge-badge': {
-                                background: '#4c51bf',
-                                color: 'white',
-                                fontSize: '0.7rem',
-                                fontWeight: 600
-                              }
-                            }}
-                          >
-                            <RemoveRedEyeIcon
-                              sx={{
-                                color: product.productViews === 0 ? "#94a3b8" : "#4c51bf",
-                                fontSize: '1.1rem'
-                              }}
-                            />
-                          </Badge>
-                        </Button>
-                      </Box>
-                      
-                      <Box className={"product-desc"}>
-                        <span className={"product-title"}>
-                          {product.productName}
-                        </span>
-                        <div className={"product-desc"}>
-                          <MonetizationOnIcon />
-                          Rp {product.productPrice.toLocaleString()}
-                        </div>
-                      </Box>
-                    </Stack>
-                  );
-                })
+                    product={product}
+                    onAdd={onAdd}
+                    onProductClick={chosenProductHandler}
+                  />
+                ))
               ) : !loading ? (
                 <Box className="no-data">
                   <Typography variant="h6" sx={{ mb: 1, color: '#64748b' }}>
@@ -277,7 +358,7 @@ export default function Products(props: ProductsProps) {
                   <Typography variant="body2" sx={{ color: '#94a3b8' }}>
                     Try adjusting your search criteria or browse different categories
                   </Typography>
-                </Box>
+                      </Box>
               ) : null}
             </Stack>
           </Stack>

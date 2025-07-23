@@ -27,7 +27,6 @@ function App() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   /** HANDLERS **/
-
   const handleSignupClose = () => setSignupOpen(false);
   const handleLoginClose = () => setLoginOpen(false);
 
@@ -78,6 +77,7 @@ function App() {
           handleLogoutRequest={handleLogoutRequest}
         />
       )}
+      
       <Routes>
         <Route path="/products/*" element={<ProductsPage onAdd={onAdd} />} />
         <Route path="/orders" element={<OrdersPage />} />
@@ -85,6 +85,7 @@ function App() {
         <Route path="/help" element={<HelpPage />} />
         <Route path="/" element={<HomePage />} />
       </Routes>
+      
       <Footer />
 
       <AuthenticationModal

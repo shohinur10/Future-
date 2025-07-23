@@ -124,13 +124,13 @@ export default function ChosenProduct(props: ChosenProductProps) {
       try {
         setLoading(true);
         
-        const product = new ProductService();
+    const product = new ProductService();
         const productData = await product.getProduct(productId);
         if (productData) {
           setChosenProduct(productData);
         }
 
-        const member = new MemberService();
+    const member = new MemberService();
         const founderData = await member.getFounder();
         setFounder(founderData);
       } catch (err) {

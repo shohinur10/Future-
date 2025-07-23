@@ -52,6 +52,7 @@ class MemberService {
     console.log("Using mock data for founder");
     return mockFounder;
   }
+
   public async signup(input: MemberInput): Promise<Member> {
     try {
       const url = this.path + "/member/signup";
@@ -99,35 +100,83 @@ class MemberService {
     }
   }
 
-   public async updateMember(input: MemberUpdateInput): Promise<Member> {
+  // Update profile image only
+  public async updateMemberImage(imageFormData: FormData): Promise<Member> {
+    try {
+      const url = this.path + "/member/update-image";
+      console.log("Uploading to:", url);
+      console.log("FormData with image file ready for upload");
+      
+      const result = await axios.post(url, imageFormData, {
+        withCredentials: true,
+        // Don't set Content-Type header - let browser set it automatically for FormData
+        // This ensures proper boundary is set for multipart/form-data
+      });
+      
+      console.log("updateMemberImage success:", result);
+      const member: Member = result.data;
+      localStorage.setItem("memberData", JSON.stringify(member));
+      return member;
+    } catch (err: any) {
+      console.log("Error, updateMemberImage:", err);
+      if (err.response) {
+        console.log("Server error details:", err.response.data);
+        console.log("Server status:", err.response.status);
+      }
+      throw err;
+    }
+  }
+
+  // Update member profile information
+  public async updateMember(input: {
+    memberNick?: string;
+    memberEmail?: string;
+    memberPhone?: string;
+    memberAddress?: string;
+    memberDesc?: string;
+  }): Promise<Member> {
+    try {
+      const url = this.path + "/member/update";
+      const result = await axios.post(url, input, { withCredentials: true });
+      
+      console.log("updateMember:", result);
+      const member: Member = result.data;
+      localStorage.setItem("memberData", JSON.stringify(member));
+      return member;
+    } catch (err) {
+      console.log("Error, updateMember:", err);
+      throw err;
+    }
+  }
+
+  // Legacy method for backward compatibility
+  public async updateMemberLegacy(input: MemberUpdateInput): Promise<Member> {
     try {
       const formData = new FormData();
-     formData.append("memberNick", input.memberNick || "");
+      formData.append("memberNick", input.memberNick || "");
       formData.append("memberPhone", input.memberPhone || "");
       formData.append("memberAddress", input.memberAddress || "");
-     formData.append("memberDesc", input.memberDesc || "")
-     formData.append("memberImage", input.memberImage || "");
+      formData.append("memberDesc", input.memberDesc || "");
+      formData.append("memberImage", input.memberImage || "");
 
-     const result = await axios(`${this.path}/member/update`, {
-      method: "POST",
-      data: formData,
-      withCredentials: true,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    
-     console.log("updateMember:", result);
-
+      const result = await axios(`${this.path}/member/update`, {
+        method: "POST",
+        data: formData,
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      
+      console.log("updateMemberLegacy:", result);
       const member: Member = result.data;
-       localStorage.setItem("memberData", JSON.stringify(member));
+      localStorage.setItem("memberData", JSON.stringify(member));
       return member;
-   } catch (err) {
-     console.log("Error, updateMember:", err);
-     throw err;
-   }
+    } catch (err) {
+      console.log("Error, updateMemberLegacy:", err);
+      throw err;
+    }
   }
 }
-
 
 export default MemberService;
