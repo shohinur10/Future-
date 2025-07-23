@@ -1,5 +1,5 @@
 import theme from "./app/MaterialTheme/index";
-import { ThemeProvider } from "@emotion/react";
+import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import React from "react";
 import { Provider } from "react-redux";

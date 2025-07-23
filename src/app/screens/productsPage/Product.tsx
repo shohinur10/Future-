@@ -96,23 +96,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAdd, onProductClic
         display: 'flex',
         flexDirection: 'column',
         cursor: 'pointer',
-        borderRadius: '12px',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+        borderRadius: '16px',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
         transition: 'all 0.3s ease',
         overflow: 'hidden',
-        border: '1px solid #f1f5f9',
+        border: '1px solid #f8fafc',
         background: 'white',
         '&:hover': {
-          transform: 'translateY(-4px)',
-          boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
+          transform: 'translateY(-2px)',
+          boxShadow: '0 8px 20px rgba(0, 0, 0, 0.12)',
         }
       }}
       onClick={() => onProductClick(product._id)}
     >
-      {/* Top - Large Image Section (75% of card height) */}
+      {/* Image Section - Now 85% of card height for maximum photo focus */}
       <Box sx={{ 
         position: 'relative',
-        height: '280px', // Increased for better image display
+        height: '320px', // Increased from 280px - more space for photos
         width: '100%',
         overflow: 'hidden'
       }}>
@@ -122,163 +122,95 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAdd, onProductClic
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            transition: 'transform 0.3s ease'
+            transition: 'transform 0.4s ease'
           }}
           image={imagePath}
           alt={product.productName}
           onError={handleImageError}
         />
         
-        {/* Premium Material Badge */}
-        <Chip
-          label={product.productMaterialType || "Premium"}
-          size="small"
-          sx={{
-            position: 'absolute',
-            top: 12,
-            left: 12,
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            zIndex: 2,
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px'
-          }}
-        />
-        
-        {/* Views Badge */}
+        {/* Minimal Price Badge - Only essential info */}
         <Box
           sx={{
             position: 'absolute',
-            bottom: 12,
+            top: 12,
             right: 12,
-            background: 'rgba(0, 0, 0, 0.75)',
-            color: 'white',
-            borderRadius: '20px',
-            px: 1.5,
-            py: 0.5,
+            background: 'rgba(255, 255, 255, 0.95)',
+            color: '#2d3748',
+            borderRadius: '12px',
+            px: 2,
+            py: 1,
             display: 'flex',
             alignItems: 'center',
             gap: 0.5,
-            fontSize: '0.8rem',
-            fontWeight: 600,
-            backdropFilter: 'blur(10px)'
+            fontSize: '1rem',
+            fontWeight: 700,
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
           }}
         >
-          <RemoveRedEyeIcon sx={{ fontSize: '1rem' }} />
-          {product.productViews || 0}
+          <AttachMoneyIcon sx={{ fontSize: '1.1rem', color: '#10b981' }} />
+          {product.productPrice.toLocaleString()}
         </Box>
       </Box>
 
-      {/* Bottom - Content Section (40% of card height) */}
+      {/* Compact Content Section - Just the essentials */}
       <CardContent sx={{ 
         flex: 1,
         display: 'flex', 
         flexDirection: 'column',
         justifyContent: 'space-between',
-        p: 2,
-        '&:last-child': { pb: 2 }
+        p: 1.5,
+        '&:last-child': { pb: 1.5 }
       }}>
-        {/* Product Title and Category */}
-        <Box sx={{ mb: 1 }}>
-          <Typography variant="h6" sx={{ 
-            fontWeight: 700,
-            color: '#2d3748',
-            fontSize: '1rem',
-            lineHeight: 1.3,
-            mb: 0.5,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            display: '-webkit-box',
-            '-webkit-line-clamp': 1,
-            '-webkit-box-orient': 'vertical'
-          }}>
-            {product.productName}
-          </Typography>
-          
-          <Chip 
-            label={product.productCategory || "Furniture"}
-            size="small"
-            variant="outlined"
-            sx={{ 
-              fontSize: '0.7rem',
-              height: '24px',
-              borderColor: '#e2e8f0',
-              color: '#64748b',
-              fontWeight: 500
-            }}
-          />
-        </Box>
+        {/* Product Title Only */}
+        <Typography variant="h6" sx={{ 
+          fontWeight: 600,
+          color: '#2d3748',
+          fontSize: '0.95rem',
+          lineHeight: 1.2,
+          mb: 1,
+          textAlign: 'center',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          display: '-webkit-box',
+          '-webkit-line-clamp': 2,
+          '-webkit-box-orient': 'vertical'
+        }}>
+          {product.productName}
+        </Typography>
 
-        {/* Bottom Section - Price, Quantity, Button */}
-        <Box onClick={(e) => e.stopPropagation()}>
-          {/* Price Display */}
+        {/* Simplified Controls - Focus on purchasing */}
+        <Box onClick={(e) => e.stopPropagation()} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          {/* Compact Quantity Controls */}
           <Box sx={{ 
             display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            background: 'linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)',
+            alignItems: 'center',
+            background: '#f8fafc',
             borderRadius: '8px',
-            p: 1,
-            mb: 1
-          }}>
-            <AttachMoneyIcon sx={{ fontSize: '1.2rem', color: '#667eea', mr: 0.5 }} />
-            <Typography variant="h6" sx={{ 
-              fontWeight: 700,
-              color: '#2d3748',
-              fontSize: '1.2rem'
-            }}>
-              {product.productPrice.toLocaleString()}
-            </Typography>
-          </Box>
-          
-          {/* Quantity Controls */}
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            gap: 1,
-            mb: 1
+            border: '1px solid #e2e8f0'
           }}>
             <Button 
               size="small"
               onClick={(e) => handleQuantityChange(-1, e)}
               disabled={quantity <= 1}
               sx={{ 
-                minWidth: '36px',
-                width: '36px',
-                height: '36px',
-                borderRadius: '8px',
-                background: '#f8fafc',
-                border: '1px solid #e2e8f0',
+                minWidth: '28px',
+                width: '28px',
+                height: '28px',
                 color: '#667eea',
-                fontWeight: 700,
-                fontSize: '1.2rem',
-                '&:hover': {
-                  background: '#667eea',
-                  color: 'white',
-                  borderColor: '#667eea'
-                },
-                '&:disabled': {
-                  opacity: 0.5,
-                  cursor: 'not-allowed'
-                }
+                '&:hover': { background: 'rgba(102, 126, 234, 0.1)' }
               }}
             >
               -
             </Button>
             <Typography sx={{ 
-              fontWeight: 700,
-              fontSize: '1.1rem',
-              minWidth: '32px',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              minWidth: '24px',
               textAlign: 'center',
               color: '#2d3748',
-              px: 1,
-              py: 0.5,
-              background: '#f8fafc',
-              borderRadius: '6px',
-              border: '1px solid #e2e8f0'
+              px: 0.5
             }}>
               {quantity}
             </Typography>
@@ -287,24 +219,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAdd, onProductClic
               onClick={(e) => handleQuantityChange(1, e)}
               disabled={quantity >= 10}
               sx={{ 
-                minWidth: '36px',
-                width: '36px',
-                height: '36px',
-                borderRadius: '8px',
-                background: '#f8fafc',
-                border: '1px solid #e2e8f0',
+                minWidth: '28px',
+                width: '28px',
+                height: '28px',
                 color: '#667eea',
-                fontWeight: 700,
-                fontSize: '1.1rem',
-                '&:hover': {
-                  background: '#667eea',
-                  color: 'white',
-                  borderColor: '#667eea'
-                },
-                '&:disabled': {
-                  opacity: 0.5,
-                  cursor: 'not-allowed'
-                }
+                '&:hover': { background: 'rgba(102, 126, 234, 0.1)' }
               }}
             >
               +
@@ -316,25 +235,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAdd, onProductClic
             variant="contained"
             onClick={handleAddToCart}
             disabled={isAdding}
-            startIcon={isAdding ? <CircularProgress size={16} color="inherit" /> : <ShoppingCartIcon />}
+            startIcon={isAdding ? <CircularProgress size={14} color="inherit" /> : <ShoppingCartIcon />}
             sx={{
-              width: '100%',
-              py: 1,
-              fontSize: '0.9rem',
-              fontWeight: 700,
+              flex: 1,
+              py: 0.75,
+              fontSize: '0.85rem',
+              fontWeight: 600,
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               borderRadius: '8px',
               textTransform: 'none',
-              boxShadow: '0 2px 8px rgba(102, 126, 234, 0.3)',
+              boxShadow: 'none',
               '&:hover': {
                 background: 'linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)',
-                transform: 'translateY(-1px)',
-                boxShadow: '0 4px 12px rgba(102, 126, 234, 0.4)'
-              },
-              '&:disabled': {
-                opacity: 0.7,
-                cursor: 'not-allowed',
-                transform: 'none'
+                boxShadow: 'none'
               }
             }}
           >
@@ -725,7 +638,7 @@ export default function Products(props: ProductsProps) {
               color: '#2d3748',
               mb: 3
             }}>
-              Visit Our Premium Showroom
+              Visit Our Incheon Showroom
             </Typography>
             <iframe
               style={{ 
@@ -735,7 +648,7 @@ export default function Products(props: ProductsProps) {
                 borderRadius: '12px',
                 boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)'
               }}
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2996.363734762081!2d69.2267250514616!3d41.322703307863044!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae8b9a0a33281d%3A0x9c5015eab678e435!2z0KDQsNC50YXQvtC9!5e0!3m2!1sko!2skr!4v1655461169573!5m2!1sko!2skr"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d101334.38050977277!2d126.6052076!3d37.4562557!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b7b7b7b7b7b7b%3A0x7b7b7b7b7b7b7b7b!2sIncheon%2C%20South%20Korea!5e0!3m2!1sen!2skr!4v1640995200000!5m2!1sen!2skr"
               referrerPolicy="no-referrer-when-downgrade"
             />
           </Box>

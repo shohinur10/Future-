@@ -71,6 +71,48 @@ class ProductService {
     const product = mockProducts.find(p => p._id === productId);
     return product || null;
   }
+
+  public async likeProduct(productId: string): Promise<boolean> {
+    try {
+      // Try API first
+      if (!this.useMockData) {
+        const url = `${this.path}/product/${productId}/like`;
+        const result = await axios.post(url, {}, { withCredentials: true });
+        console.log("likeProduct:", result);
+        return result.data?.success || true;
+      }
+    } catch (err: any) {
+      console.log("API not available for like, using mock:", err);
+      this.useMockData = true;
+    }
+
+    // Mock like functionality
+    console.log("Mock like for product:", productId);
+    return true;
+  }
+
+  public async viewProduct(productId: string): Promise<boolean> {
+    try {
+      // Try API first
+      if (!this.useMockData) {
+        const url = `${this.path}/product/${productId}/view`;
+        const result = await axios.post(url, {}, { withCredentials: true });
+        console.log("viewProduct:", result);
+        return result.data?.success || true;
+      }
+    } catch (err: any) {
+      console.log("API not available for view, using mock:", err);
+      this.useMockData = true;
+    }
+
+    // Mock view functionality
+    console.log("Mock view for product:", productId);
+    const product = mockProducts.find(p => p._id === productId);
+    if (product) {
+      product.productViews = (product.productViews || 0) + 1;
+    }
+    return true;
+  }
 }
 
 export default ProductService;
