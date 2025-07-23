@@ -47,7 +47,11 @@ const SliderImage: React.FC<{
   };
 
   return (
-    <Box sx={{ position: 'relative', width: '100%', height: '500px' }}>
+    <Box sx={{ 
+      position: 'relative', 
+      width: '100%', 
+      height: '600px'
+    }}>
       {loading && (
         <Box
           sx={{
@@ -69,7 +73,7 @@ const SliderImage: React.FC<{
         alt={alt}
         style={{
           width: '100%',
-          height: '500px',
+          height: '600px',
           objectFit: 'cover',
           display: 'block',
           opacity: loading ? 0.3 : 1,
@@ -137,7 +141,8 @@ export default function ChosenProduct(props: ChosenProductProps) {
     };
 
     fetchData();
-  }, [productId, setChosenProduct, setFounder]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productId]); // Removed setChosenProduct and setFounder to prevent infinite loop
 
   if (loading) {
     return (
