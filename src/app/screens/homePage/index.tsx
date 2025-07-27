@@ -9,7 +9,6 @@ import ActiveUsers from "./ActiveUsers";
 import { useNavigate } from "react-router-dom";
 import "../../../css/home.css";
 import { AppDispatch } from "../../../store";
-import { ProductCategory } from "../../lib/enums/product.enum";
 import ProductService from "../../services/ProductService";
 import MemberService from "../../services/MemberService";
 import { setNewDishes, setPopularDishes, setTopUsers } from "./slice";
@@ -21,25 +20,23 @@ export default function HomePage() {
   useEffect(() => {
     const product = new ProductService();
 
-    // 🔥 Popular Products (Best Selling)
+    // 🔥 Popular Products (Best Selling) - ALL categories
     product
       .getProducts({
         page: 1,
         limit: 4,
         order: "productViews",
-        productCategory: ProductCategory.BEDROOM,
         search: "",
       })
       .then((data: any) => dispatch(setPopularDishes(data)))
       .catch((err: any) => console.log("Popular products error:", err));
 
-    // 🔥 NEW ARRIVALS
+    // 🔥 NEW ARRIVALS - ALL categories
     product
       .getProducts({
         page: 1,
         limit: 4,
         order: "createdAt",
-        productCategory: ProductCategory.BEDROOM,
         search: "",
       })
       .then((data: any) => dispatch(setNewDishes(data)))

@@ -1,0 +1,131 @@
+/* Global Image Optimization Styles for HD Quality */
+
+/* Base image optimization */
+img {
+  /* Better image rendering quality */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  
+  /* Hardware acceleration for smooth transitions */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  
+  /* Anti-aliasing for better text/edge rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Better backface visibility for transforms */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  
+  /* Prevent image selection/dragging for better UX */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  
+  /* Better image loading appearance */
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* High quality images specifically */
+img[data-quality="high"] {
+  image-rendering: high-quality;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated; /* For pixel art if needed */
+}
+
+/* Product card specific optimizations */
+.product-card img,
+.MuiCard-root img {
+  /* Ensure sharp edges on product images */
+  image-rendering: -webkit-optimize-contrast;
+  
+  /* Better scaling for product images */
+  object-fit: cover;
+  object-position: center;
+  
+  /* Smooth transitions for hover effects */
+  will-change: transform;
+}
+
+/* Loading state improvements */
+img[data-loading="true"] {
+  opacity: 0.7;
+  filter: blur(1px);
+}
+
+img[data-loading="false"] {
+  opacity: 1;
+  filter: none;
+}
+
+/* Retina display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  img {
+    /* Enhanced quality for high-DPI displays */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Background image optimizations */
+.background-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* Better rendering on retina displays */
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+}
+
+/* Card Media specific improvements */
+.MuiCardMedia-root {
+  /* Better image quality for MUI CardMedia */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  
+  /* Smooth transitions */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Hover effects optimization */
+.product-card:hover img,
+.MuiCard-root:hover img {
+  /* Maintain quality during hover transforms */
+  image-rendering: high-quality;
+}
+
+/* Loading skeleton animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.image-loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Print media optimizations */
+@media print {
+  img {
+    /* Better print quality */
+    image-rendering: high-quality;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+} 
