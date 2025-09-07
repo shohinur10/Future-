@@ -3,13 +3,16 @@ import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import React from "react";
 import { Provider } from "react-redux";
-import {store} from "./store"
+import { store } from "./store";
 import { createRoot } from 'react-dom/client';
 import ContextProvider from './app/components/context/ContextProvider';
-import { BrowserRouter  as Router} from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import { SocketProvider } from "./app/components/context/SocketContext";
 import App from "./app/App";
+
+// Type assertion to fix React 18 + Redux Provider compatibility
+const ReduxProvider = Provider as any;
 
 
 const container = document.getElementById('root')!;
@@ -17,18 +20,18 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <ReduxProvider store={store}>
       <ContextProvider>
         <SocketProvider>
-       <ThemeProvider theme ={theme}> 
-        <CssBaseline />
-        <Router>
-        <App />  
-        </Router>
-        </ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Router>
+              <App />
+            </Router>
+          </ThemeProvider>
         </SocketProvider>
       </ContextProvider>
-     </Provider>
+    </ReduxProvider>
   </React.StrictMode>
 );
 

@@ -10,6 +10,7 @@ import { CartItem } from "../lib/types/search";
 
 class OrderService {
   private readonly path: string;
+  private useMockData: boolean = false;
 
   constructor() {
     this.path = serverApi;
