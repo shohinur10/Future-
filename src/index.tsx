@@ -8,6 +8,7 @@ import { createRoot } from 'react-dom/client';
 import ContextProvider from './app/components/context/ContextProvider';
 import { BrowserRouter  as Router} from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
+import { SocketProvider } from "./app/components/context/SocketContext";
 import App from "./app/App";
 
 
@@ -18,12 +19,14 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ContextProvider>
+        <SocketProvider>
        <ThemeProvider theme ={theme}> 
         <CssBaseline />
         <Router>
         <App />  
         </Router>
         </ThemeProvider>
+        </SocketProvider>
       </ContextProvider>
      </Provider>
   </React.StrictMode>
