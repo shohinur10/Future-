@@ -107,7 +107,7 @@ export default function NewDishes() {
                   transform: featuredProduct ? 'scale(1.01)' : 'none',
                 },
                 backgroundImage: `url(${featuredProduct?.productImages?.[0] 
-                  ? `${serverApi}/${featuredProduct.productImages[0]}`
+                  ? (featuredProduct.productImages[0].startsWith('/') ? featuredProduct.productImages[0] : `${serverApi}/${featuredProduct.productImages[0]}`)
                   : defaultFurnitureImages[0]})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -176,7 +176,7 @@ export default function NewDishes() {
               {[0, 1, 2].map((index) => {
                 const product = otherProducts[index];
                 const imagePath = product?.productImages?.[0] 
-                  ? `${serverApi}/${product.productImages[0]}`
+                  ? (product.productImages[0].startsWith('/') ? product.productImages[0] : `${serverApi}/${product.productImages[0]}`)
                   : defaultFurnitureImages[(index + 1) % defaultFurnitureImages.length];
 
                 return (

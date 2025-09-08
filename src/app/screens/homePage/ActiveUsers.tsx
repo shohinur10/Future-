@@ -64,7 +64,7 @@ export default function ActiveUsers() {
                     <Card className="featured-card">
                       <CardCover>
                         <img 
-                          src={`${serverApi}/${member.memberImage}`} 
+                          src={member.memberImage?.startsWith('/') ? member.memberImage : `${serverApi}/${member.memberImage}`} 
                           alt={member.memberNick}
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;

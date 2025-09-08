@@ -303,7 +303,21 @@ export default function ChosenProduct(props: ChosenProductProps) {
                   style={{ borderRadius: '16px' }}
                 >
                   {chosenProduct?.productImages?.map((ele: string, index: number) => {
-                    const imagePath = `${serverApi}/${ele}`;
+                    // Use local images from public folder when API is not available
+                    const getImagePath = (imagePath: string) => {
+                      // If it's already a full URL, use as is
+                      if (imagePath.startsWith('http')) {
+                        return imagePath;
+                      }
+                      // If it starts with /, it's a local path, use as is
+                      if (imagePath.startsWith('/')) {
+                        return imagePath;
+                      }
+                      // Otherwise, try server API first, fallback to local
+                      return `${serverApi}/${imagePath}`;
+                    };
+                    
+                    const imagePath = getImagePath(ele);
                     
                     return (
                       <SwiperSlide key={`${productId}-${index}`}>

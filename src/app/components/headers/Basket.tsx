@@ -206,7 +206,7 @@ export default function Basket(props: BasketProps) {
                         onClick={() => onDelete(item)}
                       />
                     </div>
-                      <img src={serverApi + "/" + item.image} alt={item.name} />
+                      <img src={item.image.startsWith('/') ? item.image : `${serverApi}/${item.image}`} alt={item.name} />
                     <span className={"product-name"}>{item.name}</span>
                     <p className={"product-price"}>
                         ${item.price} × {item.quantity}

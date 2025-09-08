@@ -32,9 +32,23 @@ const SafeImage: React.FC<SafeImageProps> = ({
     onError?.(e);
   };
 
+  // Ensure we're using the correct image path
+  const getImageSrc = (imageSrc: string) => {
+    // If it's already a full URL, use as is
+    if (imageSrc.startsWith('http')) {
+      return imageSrc;
+    }
+    // If it starts with /, it's a local path, use as is
+    if (imageSrc.startsWith('/')) {
+      return imageSrc;
+    }
+    // Otherwise, it's a relative path, use as is (will be served from public folder)
+    return imageSrc;
+  };
+
   return (
     <img
-      src={currentSrc}
+      src={getImageSrc(currentSrc)}
       alt={alt}
       className={className}
       style={style}

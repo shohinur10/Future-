@@ -36,6 +36,7 @@ export default function FinishedOrders() {
   const getProductImageUrl = (imageData: string | undefined): string => {
     if (!imageData) return "/icons/noimage-list.svg";
     if (imageData.startsWith('data:')) return imageData;
+    if (imageData.startsWith('/')) return imageData;
     return `${serverApi}/${imageData}`;
   };
 

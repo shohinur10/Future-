@@ -95,6 +95,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
   const getProductImageUrl = (imageData: string | undefined): string => {
     if (!imageData) return "/icons/noimage-list.svg";
     if (imageData.startsWith('data:')) return imageData;
+    if (imageData.startsWith('/')) return imageData;
     return `${serverApi}/${imageData}`;
   };
 

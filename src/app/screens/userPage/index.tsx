@@ -204,6 +204,11 @@ export default function UserPage() {
       return imageData;
     }
     
+    // If it starts with /, it's a local path, use as is
+    if (imageData.startsWith('/')) {
+      return imageData;
+    }
+    
     // If it's a server path, prefix with server API
     return `${serverApi}/${imageData}`;
   };

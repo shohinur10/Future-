@@ -1,4 +1,4 @@
-export const serverApi: string = process.env.REACT_APP_SERVER_API || "http://localhost:3003";
+export const serverApi: string = process.env.REACT_APP_SERVER_API || "http://72.60.108.222:3003";
 
 
 

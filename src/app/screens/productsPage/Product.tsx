@@ -56,9 +56,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAdd, onProductClic
     "/img/ai-generated-vintage-leather-tufted-sofa-free-png.png"
   ];
   
+  // Use local images from public folder when API is not available or image fails
+  const getImagePath = (imagePath: string) => {
+    // If it's already a full URL, use as is
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    // If it starts with /, it's a local path, use as is
+    if (imagePath.startsWith('/')) {
+      return imagePath;
+    }
+    // Otherwise, try server API first, fallback to local
+    return `${serverApi}/${imagePath}`;
+  };
+
   const imagePath = imageError ? 
     fallbackImages[Math.floor(Math.random() * fallbackImages.length)] : 
-    `${serverApi}/${product.productImages[0]}`;
+    (product.productImages && product.productImages[0] ? getImagePath(product.productImages[0]) : fallbackImages[0]);
   
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.stopPropagation();

@@ -14,6 +14,12 @@ export const getCacheBustedImageUrl = (imagePath: string, timestamp?: string | n
     return imagePath;
   }
   
+  // If it starts with /, it's a local path, use as is with cache busting
+  if (imagePath.startsWith('/')) {
+    const cacheBuster = timestamp || Date.now();
+    return `${imagePath}?v=${cacheBuster}`;
+  }
+  
   // Use provided timestamp or current time for cache busting
   const cacheBuster = timestamp || Date.now();
   

@@ -113,7 +113,7 @@ interface OtherNavbarProps {
                   className="user-avatar"
                   src={
                     authMember?.memberImage
-                      ? `${serverApi}/${authMember.memberImage}`
+                      ? (authMember.memberImage.startsWith('/') ? authMember.memberImage : `${serverApi}/${authMember.memberImage}`)
                       : "/icons/default-user.svg"
                   }
                   alt={authMember?.memberNick || "User avatar"}

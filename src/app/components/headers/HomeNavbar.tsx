@@ -142,7 +142,7 @@ const HomeNavbar = (props: any) => {
                 className="user-avatar"
                 src={
                   authMember?.memberImage
-												? `${serverApi}/${authMember.memberImage}`
+												? (authMember.memberImage.startsWith('/') ? authMember.memberImage : `${serverApi}/${authMember.memberImage}`)
                     : "/icons/default-user.svg"
                 }
 										alt="User avatar"

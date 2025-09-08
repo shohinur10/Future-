@@ -92,6 +92,7 @@ export default function OrdersPage() {
   const getUserImageUrl = (imageData: string | undefined): string => {
     if (!imageData) return "/icons/default-user.svg";
     if (imageData.startsWith('data:')) return imageData;
+    if (imageData.startsWith('/')) return imageData;
     return `${serverApi}/${imageData}`;
   };
 
